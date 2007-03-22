@@ -10,7 +10,8 @@ version_from  ('lib/App/Addex/Apple.pm');
 
 install_script('bin/addex');
 
-requires('Test::More'       => 0.00);
-requires('Scalar::Util'     => 0.00);
+requires('Mac::Glue'        => 0.00); # no idea what the minimum version is
+requires('Sub::Install'     => 0.91); # for Params::Util use
+requires('Getopt::Long::Descriptive' => 0.06); # for %c in format
 
 WriteAll();
