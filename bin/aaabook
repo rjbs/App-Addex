@@ -1,0 +1,54 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+package App::Addex::aaabook;
+
+=head1 NAME
+
+aaabook -- create mail helper files for Apple Address Book entries
+
+=head1 VERSION
+
+version 0.001
+
+  $Id$
+
+=cut
+
+our $VERSION = '0.001';
+
+=head1 SYNOPSIS
+
+This module iterates through all the entries in an Apple Address Book and
+produces configuration files for F<mutt> and F<procmail> based on that data.
+
+It is meant to be run with the F<ubook> command, which is bundled as part of
+this software distribution.
+
+=head1 METHODS
+
+B<Achtung!>  The API to this code may very well change.
+
+=cut
+
+use App::Addex::Apple;
+use Getopt::Long::Descriptive;
+
+my ($opt, $usage) = describe_options(
+  '%c %o',
+  [ 'procmailrc|P=s', 'filename to which to write procmail recipies'       ],
+  [ 'muttrc|M=s',     'filename to which to write mutt rules'              ],
+  [ 'whitelists|W=s', 'filename to which to write spamassassin whitelists' ],
+);
+
+die "you must supply either --procmailrc or --muttrc or --whitelists\n"
+  unless $opt->{procmailrc} or $opt->{muttrc} or $opt->{whitelists};
+
+my $abook = App::Addex::Apple->new({
+  procmailrc => $opt->{procmailrc},
+  muttrc     => $opt->{muttrc},
+  whitelists => $opt->{whitelists},
+});
+
+$abook->run;
