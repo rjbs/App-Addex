@@ -2,11 +2,11 @@
 use strict;
 use warnings;
 
-package App::Addex::aaabook;
+package App::Addex::addex;
 
 =head1 NAME
 
-aaabook -- create mail helper files for Apple Address Book entries
+addex - create mail helper files for Apple Address Book entries
 
 =head1 VERSION
 
@@ -18,17 +18,11 @@ version 0.001
 
 our $VERSION = '0.001';
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
-This module iterates through all the entries in an Apple Address Book and
-produces configuration files for F<mutt> and F<procmail> based on that data.
-
-It is meant to be run with the F<ubook> command, which is bundled as part of
-this software distribution.
-
-=head1 METHODS
-
-B<Achtung!>  The API to this code may very well change.
+The F<addex> command produces configuration for various email tools based on
+your address book.  For now, only Apple Address Book is supported.  For more
+information, consult L<App::Addex::Apple>.
 
 =cut
 
@@ -45,10 +39,30 @@ my ($opt, $usage) = describe_options(
 die "you must supply either --procmailrc or --muttrc or --whitelists\n"
   unless $opt->{procmailrc} or $opt->{muttrc} or $opt->{whitelists};
 
-my $abook = App::Addex::Apple->new({
+my $addex = App::Addex::Apple->new({
   procmailrc => $opt->{procmailrc},
   muttrc     => $opt->{muttrc},
   whitelists => $opt->{whitelists},
 });
 
-$abook->run;
+$addex->run;
+
+=head1 AUTHOR
+
+Ricardo SIGNES, C<< <rjbs@cpan.org> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests through the web interface at
+L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
+notified of progress on your bug as I make changes.
+
+=head1 COPYRIGHT
+
+Copyright 2006-2007 Ricardo Signes, all rights reserved.
+
+This program is free software; you may redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
+

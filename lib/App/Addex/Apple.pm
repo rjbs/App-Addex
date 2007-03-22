@@ -32,7 +32,9 @@ this software distribution.
 
 =head1 METHODS
 
-B<Achtung!>  The API to this code may very well change.
+B<Achtung!>  The API to this code may very well change.  It is almost certain
+to be broken into smaller pieces, to support alternate sources of people, and
+it might just get plugins.
 
 =cut
 
@@ -42,7 +44,7 @@ use Sub::Install ();
 
 =head2 new
 
-  my $aaabook = App::Addex::Apple->new(\%arg);
+  my $addex= App::Addex::Apple->new(\%arg);
 
 This method returns a new Addex.
 
@@ -304,10 +306,9 @@ Ricardo SIGNES, C<< <rjbs@cpan.org> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-data-guid@rt.cpan.org>, or
-through the web interface at L<http://rt.cpan.org>.  I will be notified, and
-then you'll automatically be notified of progress on your bug as I make
-changes.
+Please report any bugs or feature requests through the web interface at
+L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
+notified of progress on your bug as I make changes.
 
 =head1 COPYRIGHT
 
