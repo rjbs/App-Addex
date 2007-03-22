@@ -40,7 +40,7 @@ use Carp ();
 use Mac::Glue qw(:glue);
 use Sub::Install ();
 
-=head1 new
+=head2 new
 
   my $aaabook = App::Addex::Apple->new(\%arg);
 
