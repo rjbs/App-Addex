@@ -1,0 +1,68 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+package App::Addex::addex;
+
+=head1 NAME
+
+addex - create mail helper files for Apple Address Book entries
+
+=head1 VERSION
+
+version 0.001
+
+  $Id$
+
+=cut
+
+our $VERSION = '0.001';
+
+=head1 DESCRIPTION
+
+The F<addex> command produces configuration for various email tools based on
+your address book.  For now, only Apple Address Book is supported.  For more
+information, consult L<App::Addex::Apple>.
+
+=cut
+
+use App::Addex::Apple;
+use Getopt::Long::Descriptive;
+
+my ($opt, $usage) = describe_options(
+  '%c %o',
+  [ 'procmailrc|P=s', 'filename to which to write procmail recipies'       ],
+  [ 'muttrc|M=s',     'filename to which to write mutt rules'              ],
+  [ 'whitelists|W=s', 'filename to which to write spamassassin whitelists' ],
+);
+
+die "you must supply either --procmailrc or --muttrc or --whitelists\n"
+  unless $opt->{procmailrc} or $opt->{muttrc} or $opt->{whitelists};
+
+my $addex = App::Addex::Apple->new({
+  procmailrc => $opt->{procmailrc},
+  muttrc     => $opt->{muttrc},
+  whitelists => $opt->{whitelists},
+});
+
+$addex->run;
+
+=head1 AUTHOR
+
+Ricardo SIGNES, C<< <rjbs@cpan.org> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests through the web interface at
+L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
+notified of progress on your bug as I make changes.
+
+=head1 COPYRIGHT
+
+Copyright 2006-2007 Ricardo Signes, all rights reserved.
+
+This program is free software; you may redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
+
