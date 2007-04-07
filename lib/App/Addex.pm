@@ -5,7 +5,8 @@ use warnings;
 package App::Addex;
 
 use Carp ();
-use Sub::Install ();
+# use Encode ();
+# use Unicode::Normalize ();
 
 =head1 NAME
 
@@ -45,10 +46,6 @@ This method returns a new Addex.
 Valid paramters are:
 
   classes    - a hashref of plugin/class pairs, described below
-
-  muttrc     - the file name to which to output mutt configuration
-  procmailrc - the file name to which to output procmail configuration
-  whitelists - the file name to which to output spamassassin whitelists
 
 Valid keys for the F<classes> parameter are:
 
@@ -112,44 +109,6 @@ This method returns all the output plugin objects.
 sub output_plugins {
   my ($self) = @_;
   return @{ $self->{output} };
-}
-
-=head2 asciify
-
-  my $ascii_string = $abook->asciify($string);
-
-This method converts a string to seven bit ASCII text, in theory.  In reality
-it is terrible and needs to be fixed or eliminated.
-
-=head2 aliasify
-
-  my $alias = $abook->aliasify($string);
-
-Given a string containing a name or nickname, this routine returns a new,
-derived string that can be used (in F<mutt>) as a one-word alias for the name.
-
-=cut
-
-BEGIN {
-  sub _munger {
-    my ($code) = @_;
-    sub {
-      my (undef, $str) = @_;
-      return unless defined $str;
-      $str = $code->($str);
-      return $str;
-    };
-  }
-
-  Sub::Install::install_sub({
-    code => _munger(sub { $_[0] =~ tr/\216\277/e0/; $_[0] }),
-    as   => 'asciify',
-  });
-
-  Sub::Install::install_sub({
-    code => _munger(sub { $_[0] =~ tr/ .'//d; lc $_[0] }),
-    as   => 'aliasify',
-  });
 }
 
 =head2 run

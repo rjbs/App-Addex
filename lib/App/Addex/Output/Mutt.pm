@@ -72,10 +72,18 @@ a message to the entry.
 
 =cut
 
+sub _aliasify {
+  my (undef, $text) = @_;
+
+  return unless defined $text;
+  $text =~ tr/ .'//d;
+  return lc $text;
+}
+
 sub process_entry {
   my ($self, $addex, $entry) = @_;
 
-  my $name   = $addex->asciify($entry->name);
+  my $name   = $entry->name;
   my @emails = $entry->emails;
 
   my $folder = $entry->field('folder');
@@ -94,7 +102,7 @@ sub process_entry {
   }
 
   my @aliases
-    = grep { defined $_ } map { $addex->aliasify($_) } $entry->nick, $name;
+    = grep { defined $_ } map { $self->_aliasify($_) } $entry->nick, $name;
 
   $self->_output("alias $_ $emails[0] ($name)") for @aliases;
 

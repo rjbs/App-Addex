@@ -6,7 +6,7 @@ package App::Addex::addex;
 
 =head1 NAME
 
-addex - create mail helper files for Apple Address Book entries
+addex - create mail helper files for address book entries
 
 =head1 VERSION
 
@@ -21,8 +21,7 @@ our $VERSION = '0.001';
 =head1 DESCRIPTION
 
 The F<addex> command produces configuration for various email tools based on
-your address book.  For now, only Apple Address Book is supported.  For more
-information, consult L<App::Addex::Apple>.
+your address book.  For more information, consult L<App::Addex>.
 
 =cut
 
@@ -40,6 +39,10 @@ my ($opt, $usage) = describe_options(
 
 my $config = Config::Tiny->read($opt->{config})
   or die "couldn't read config file $opt->{config}\n";
+
+die 'illegal section "classes" in config' if exists $config->{classes};
+
+$config->{classes} = delete $config->{_};
 
 $config->{classes}{output} = [ split /,\s*/, $config->{classes}{output} ];
 
