@@ -27,32 +27,23 @@ information, consult L<App::Addex::Apple>.
 =cut
 
 use App::Addex;
+use Config::Tiny;
+use File::HomeDir;
+use File::Spec;
 use Getopt::Long::Descriptive;
 
 my ($opt, $usage) = describe_options(
   '%c %o',
-  [ 'procmailrc|P=s', 'filename to which to write procmail recipies'       ],
-  [ 'muttrc|M=s',     'filename to which to write mutt rules'              ],
-  [ 'whitelists|W=s', 'filename to which to write spamassassin whitelists' ],
+  [ 'config|c=s',     'config file name',
+    { default => File::Spec->catfile(File::HomeDir->my_home, '.addex') }   ],
 );
 
-die "you must supply either --procmailrc or --muttrc or --whitelists\n"
-  unless $opt->{procmailrc} or $opt->{muttrc} or $opt->{whitelists};
+my $config = Config::Tiny->read($opt->{config})
+  or die "couldn't read config file $opt->{config}\n";
 
-my $addex = App::Addex->new({
-  classes => {
-    addressbook => 'App::Addex::AddressBook::Apple',
-    output      => [ qw(
-      App::Addex::Output::Mutt
-      App::Addex::Output::Procmail
-      App::Addex::Output::SpamAssassin
-    ) ],
-  },
+$config->{classes}{output} = [ split /,\s*/, $config->{classes}{output} ];
 
-  'App::Addex::Output::Mutt'         => { filename => $opt->{mutt} },
-  'App::Addex::Output::Procmail'     => { filename => $opt->{procmailrc} },
-  'App::Addex::Output::SpamAssassin' => { filename => $opt->{whitelists} },
-});
+my $addex = App::Addex->new($config);
 
 $addex->run;
 

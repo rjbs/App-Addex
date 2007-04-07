@@ -42,7 +42,6 @@ sub new {
   open my $fh, '>', $arg->{filename}
     or Carp::croak "couldn't open output file $arg->{filename}: $!";
 
-  print "OPENED FILE $arg->{filename}\n";
   $self->{fh} = $fh;
 
   return $self;
