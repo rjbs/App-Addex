@@ -40,7 +40,14 @@ die "you must supply either --procmailrc or --muttrc or --whitelists\n"
   unless $opt->{procmailrc} or $opt->{muttrc} or $opt->{whitelists};
 
 my $addex = App::Addex->new({
-  addressbook_class => 'App::Addex::AddressBook::Apple',
+  classes => {
+    addressbook => 'App::Addex::AddressBook::Apple',
+    output      => [ qw(
+      App::Addex::Output::Mutt
+      App::Addex::Output::Procmail
+      App::Addex::Output::SpamAssassin
+    ) ],
+  },
 
   procmailrc => $opt->{procmailrc},
   muttrc     => $opt->{muttrc},

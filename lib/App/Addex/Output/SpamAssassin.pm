@@ -15,7 +15,7 @@ App::Addex - generate mail tool configuration from an address book
 
 version 0.002
 
-  $Id$
+  $Id: /my/cs/projects/App-Addex/trunk/lib/App/Addex.pm 31327 2007-04-06T23:00:12.564293Z rjbs  $
 
 =cut
 
