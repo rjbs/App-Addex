@@ -14,7 +14,7 @@ App::Addex::Entry - an entry in your address book
 
 version 0.002
 
-  $Id: /my/cs/projects/App-Addex/trunk/lib/App/Addex.pm 31316 2007-04-06T16:11:50.780639Z rjbs  $
+  $Id$
 
 =cut
 

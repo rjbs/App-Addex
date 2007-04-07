@@ -16,7 +16,7 @@ App::Addex::AddressBook - the address book that addex will consult
 
 version 0.002
 
-  $Id: /my/cs/projects/App-Addex/trunk/lib/App/Addex.pm 31325 2007-04-06T22:45:07.015819Z rjbs  $
+  $Id$
 
 =cut
 
