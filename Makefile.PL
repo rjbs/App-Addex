@@ -15,6 +15,5 @@ requires('File::HomeDir'             => 0.00); # minimum unknown
 requires('File::Spec'                => 0.00); # minimum unknown
 requires('Getopt::Long::Descriptive' => 0.06); # for %c in format
 requires('Mac::Glue'                 => 0.00); # minimum unknown
-requires('Sub::Install'              => 0.91); # for Params::Util use
 
 WriteAll();
