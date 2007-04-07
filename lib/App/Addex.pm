@@ -63,15 +63,18 @@ thrown.
 sub new {
   my ($class, $arg) = @_;
 
-  Carp::confess
-    "at least one of procmailrc, muttrc, or whitelists must be provided"
-    unless $arg->{muttrc} or $arg->{procmailrc} or $arg->{whitelists};
-
   my $self = bless {} => $class;
 
-  $self->{muttrc}     = $arg->{muttrc};
-  $self->{procmailrc} = $arg->{procmailrc};
-  $self->{whitelists} = $arg->{whitelists};
+#  Carp::confess
+#    "at least one of procmailrc, muttrc, or whitelists must be provided"
+#    unless $arg->{muttrc} or $arg->{procmailrc} or $arg->{whitelists};
+#
+#  $self->{muttrc}     = $arg->{muttrc};
+#  $self->{procmailrc} = $arg->{procmailrc};
+#  $self->{whitelists} = $arg->{whitelists};
+  $arg->{'App::Addex::Output::Mutt'}{filename} = $arg->{muttrc};
+  $arg->{'App::Addex::Output::Procmail'}{filename} = $arg->{procmailrc};
+  $arg->{'App::Addex::Output::SpamAssassin'}{filename} = $arg->{whitelists};
 
   # XXX: keep track of seen/unseen classes; carp if some go unused?
   # -- rjbs, 2007-04-06
@@ -111,25 +114,16 @@ This method returns the App::Addex::AddressBook object.
 
 sub addressbook { $_[0]->{addressbook} }
 
-=head2 muttrc
+=head2 output_plugins
 
-=head2 procmailrc
+This method returns all the output plugin objects.
 
-=head2 whitelists
+=cut
 
-These methods return the names of the files to which configuration will be
-written, if any.
-
-=head2 muttrc_line
-
-=head2 procmailrc_line
-
-=head2 whitelists_line
-
-  $abook->muttrc_line($line);
-
-These methods text to the correct configuration file, appending a trailing
-newline.
+sub output_plugins {
+  my ($self) = @_;
+  return @{ $self->{output} };
+}
 
 =head2 asciify
 
@@ -148,39 +142,6 @@ derived string that can be used (in F<mutt>) as a one-word alias for the name.
 =cut
 
 BEGIN {
-  for my $file (qw(muttrc procmailrc whitelists)) {
-    my $fh_method = "_$file\_fh";
-
-    my $fh_sub = sub {
-      my ($self) = @_;
-
-      return unless $self->{$file};
-      return $self->{$fh_method} if $self->{$fh_method};
-
-      open my $fh, '>', $self->{$file}
-        or die "couldn't open $file for writing: $!";
-
-      return $self->{$fh_method} = $fh;
-    };
-
-    Sub::Install::install_sub({
-      code => $fh_sub,
-      as   => $fh_method,
-    });
-
-    my $print_sub = sub {
-      my ($self, $line) = @_;
-      return unless $self->{$file};
-      print {$self->$fh_method} "$line\n"
-        or die "couldn't write line to $file: $!";
-    };
-
-    Sub::Install::install_sub({
-      code => $print_sub,
-      as   => "$file\_line",
-    });
-  }
-
   sub _munger {
     my ($code) = @_;
     sub {
@@ -209,82 +170,14 @@ BEGIN {
 This method performs all the work expected of an Addex: it iterates through the
 entries, writing the relevant information to the relevant files.
 
-Generally, this consists of:
-
-=head3 mutt configuration
-
-If requested, the F<muttrc> file will contain a list of alias lines.  The first
-email address for each entry will be aliased to the entry's aliasified
-nickname and name.  Every other address will be aliased to one of those with an
-appended, incrementing counter.  The entry's name is added as the alias's
-"real name."
-
-If the entry has a "folder" value (given as a line in the card's "notes" that
-looks like "folder: value") a save-hook is created to save mail from the entry
-to that folder and a mailboxes line is created for the folder.  If the entry
-has a "sig" value, a send-hook is created to use that signature when composing
-a message to the entry.
-
-=head3 procmail configuration
-
-If requested, the F<procmailrc> file will contain a list of simple recipies,
-filtering mail from any one of a entry's addresses to his "folder" value (see
-above).  People without "folder" settings do not appear in the created
-F<procmail> configuration.
-
-=head3 whitelists
-
-If requested, the F<whitelists> file will contain a list of C<whitelist_from>
-lines, whitelisting each email address seen in the address book.
-
 =cut
 
 sub run {
   my ($self) = @_;
 
   for my $entry ($self->addressbook->entries) {
-    my $name   = $self->asciify($entry->name);
-    my @emails = $entry->emails;
-
-    my $folder = $entry->field('folder');
-    my $sig    = $entry->field('sig');
-
-    if ($self->_whitelists_fh) {
-      $self->whitelists_line("whitelist_from $_") for @emails;
-    }
-
-    if ($folder) {
-      $folder =~ tr{/}{.};
-      $self->muttrc_line("save-hook ~f$_ =$folder") for @emails;
-      $self->muttrc_line("mailboxes =$folder")
-        unless $self->{_saw_folder}{$folder}++;
-
-      if ($self->_procmailrc_fh) {
-        for my $email (@emails) {
-          $self->procmailrc_line(":0");
-          $self->procmailrc_line("* From:.*$email");
-          $self->procmailrc_line(".$folder/");
-          $self->procmailrc_line(q{});
-        }
-      }
-    }
-
-    if ($sig) {
-      $self->muttrc_line(qq{send-hook ~t$_ set signature="~/.sig/$sig"})
-        for @emails;
-    }
-
-    my @aliases
-      = grep { defined $_ } map { $self->aliasify($_) } $entry->nick, $name;
-
-    $self->muttrc_line("alias $_ $emails[0] ($name)") for @aliases;
-
-    # It's not that you're expected to -use- these aliases, but they allow
-    # mutt's reverse_alias to do its thing.
-    if (@emails > 1) {
-      for my $i (1 .. $#emails) {
-        $self->muttrc_line("alias $aliases[0]-$i $emails[$i] ($name)");
-      }
+    for my $plugin ($self->output_plugins) {
+      $plugin->process_entry($self, $entry);
     }
   }
 }

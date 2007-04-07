@@ -38,7 +38,24 @@ sub new {
   my ($class, $arg) = @_;
 
   my $self = bless {} => $class;
+
+  open my $fh, '>', $arg->{filename}
+    or Carp::croak "couldn't open output file $arg->{filename}: $!";
+
+  print "OPENED FILE $arg->{filename}\n";
+  $self->{fh} = $fh;
+
+  return $self;
 }
+
+sub _output {
+  my ($self, $line) = @_;
+
+  print { $self->{fh} } "$line\n"
+    or Carp::croak "couldn't write to output file: $!";
+}
+
+=head2 process_entry
 
 =head3 mutt configuration
 
@@ -56,52 +73,37 @@ a message to the entry.
 
 =cut
 
-sub _run {
-  my ($self) = @_;
+sub process_entry {
+  my ($self, $addex, $entry) = @_;
 
-  for my $entry ($self->addressbook->entries) {
-    my $name   = $self->asciify($entry->name);
-    my @emails = $entry->emails;
+  my $name   = $addex->asciify($entry->name);
+  my @emails = $entry->emails;
 
-    my $folder = $entry->field('folder');
-    my $sig    = $entry->field('sig');
+  my $folder = $entry->field('folder');
+  my $sig    = $entry->field('sig');
 
-    if ($self->_whitelists_fh) {
-      $self->whitelists_line("whitelist_from $_") for @emails;
-    }
+  if ($folder) {
+    $folder =~ tr{/}{.};
+    $self->_output("save-hook ~f$_ =$folder") for @emails;
+    $self->_output("mailboxes =$folder")
+      unless $self->{_saw_folder}{$folder}++;
+  }
 
-    if ($folder) {
-      $folder =~ tr{/}{.};
-      $self->muttrc_line("save-hook ~f$_ =$folder") for @emails;
-      $self->muttrc_line("mailboxes =$folder")
-        unless $self->{_saw_folder}{$folder}++;
+  if ($sig) {
+    $self->_output(qq{send-hook ~t$_ set signature="~/.sig/$sig"})
+      for @emails;
+  }
 
-      if ($self->_procmailrc_fh) {
-        for my $email (@emails) {
-          $self->procmailrc_line(":0");
-          $self->procmailrc_line("* From:.*$email");
-          $self->procmailrc_line(".$folder/");
-          $self->procmailrc_line(q{});
-        }
-      }
-    }
+  my @aliases
+    = grep { defined $_ } map { $addex->aliasify($_) } $entry->nick, $name;
 
-    if ($sig) {
-      $self->muttrc_line(qq{send-hook ~t$_ set signature="~/.sig/$sig"})
-        for @emails;
-    }
+  $self->_output("alias $_ $emails[0] ($name)") for @aliases;
 
-    my @aliases
-      = grep { defined $_ } map { $self->aliasify($_) } $entry->nick, $name;
-
-    $self->muttrc_line("alias $_ $emails[0] ($name)") for @aliases;
-
-    # It's not that you're expected to -use- these aliases, but they allow
-    # mutt's reverse_alias to do its thing.
-    if (@emails > 1) {
-      for my $i (1 .. $#emails) {
-        $self->muttrc_line("alias $aliases[0]-$i $emails[$i] ($name)");
-      }
+  # It's not that you're expected to -use- these aliases, but they allow
+  # mutt's reverse_alias to do its thing.
+  if (@emails > 1) {
+    for my $i (1 .. $#emails) {
+      $self->_output("alias $aliases[0]-$i $emails[$i] ($name)");
     }
   }
 }
