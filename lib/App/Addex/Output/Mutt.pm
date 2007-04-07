@@ -56,7 +56,7 @@ a message to the entry.
 
 =cut
 
-sub run {
+sub _run {
   my ($self) = @_;
 
   for my $entry ($self->addressbook->entries) {

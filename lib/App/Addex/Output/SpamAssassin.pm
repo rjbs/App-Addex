@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-package App::Addex;
+package App::Addex::Output::SpamAssassin;
 
 use Carp ();
 use Sub::Install ();
@@ -63,35 +63,7 @@ thrown.
 sub new {
   my ($class, $arg) = @_;
 
-  Carp::confess
-    "at least one of procmailrc, muttrc, or whitelists must be provided"
-    unless $arg->{muttrc} or $arg->{procmailrc} or $arg->{whitelists};
-
   my $self = bless {} => $class;
-
-  $self->{muttrc}     = $arg->{muttrc};
-  $self->{procmailrc} = $arg->{procmailrc};
-  $self->{whitelists} = $arg->{whitelists};
-
-  # XXX: keep track of seen/unseen classes; carp if some go unused?
-  # -- rjbs, 2007-04-06
-
-  for my $core (qw(addressbook)) {
-    my $class = $arg->{classes}{$core}
-      or Carp::confess "no $core class provided";
-
-    $self->{$core} = $self->_learn_plugin($class, $arg->{$class});
-  }
-
-  my @output_classes = @{ $arg->{classes}{output} || [] };
-  # XXX: move the above "plugins" into here, including the confess
-  my @output_plugins;
-  for my $class (@output_classes) {
-    push @output_plugins, $self->_learn_plugin($class, $arg->{$class});
-  }
-  $self->{output} = \@output_plugins;
-
-  return bless $self => $class;
 }
 
 sub _learn_plugin {
