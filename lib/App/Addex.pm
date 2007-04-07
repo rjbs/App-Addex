@@ -65,17 +65,6 @@ sub new {
 
   my $self = bless {} => $class;
 
-#  Carp::confess
-#    "at least one of procmailrc, muttrc, or whitelists must be provided"
-#    unless $arg->{muttrc} or $arg->{procmailrc} or $arg->{whitelists};
-#
-#  $self->{muttrc}     = $arg->{muttrc};
-#  $self->{procmailrc} = $arg->{procmailrc};
-#  $self->{whitelists} = $arg->{whitelists};
-  $arg->{'App::Addex::Output::Mutt'}{filename} = $arg->{muttrc};
-  $arg->{'App::Addex::Output::Procmail'}{filename} = $arg->{procmailrc};
-  $arg->{'App::Addex::Output::SpamAssassin'}{filename} = $arg->{whitelists};
-
   # XXX: keep track of seen/unseen classes; carp if some go unused?
   # -- rjbs, 2007-04-06
 

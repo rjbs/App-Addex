@@ -49,9 +49,9 @@ my $addex = App::Addex->new({
     ) ],
   },
 
-  procmailrc => $opt->{procmailrc},
-  muttrc     => $opt->{muttrc},
-  whitelists => $opt->{whitelists},
+  'App::Addex::Output::Mutt'         => { filename => $opt->{mutt} },
+  'App::Addex::Output::Procmail'     => { filename => $opt->{procmailrc} },
+  'App::Addex::Output::SpamAssassin' => { filename => $opt->{whitelists} },
 });
 
 $addex->run;
