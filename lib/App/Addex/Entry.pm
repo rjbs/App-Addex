@@ -5,7 +5,6 @@ use warnings;
 package App::Addex::Entry;
 
 use Carp ();
-use Sub::Install ();
 
 =head1 NAME
 

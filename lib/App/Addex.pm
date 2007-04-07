@@ -22,13 +22,13 @@ version 0.002
 
 our $VERSION = '0.002';
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
 This module iterates through all the entries in an address book and produces
-configuration files for F<mutt>, F<procmail>, and F<spamassassin> based on that
-data.
+configuration file based on the entries in the address book, using configured
+output plugins.
 
-It is meant to be run with the F<aaabook> command, which is bundled as part of
+It is meant to be run with the F<addex> command, which is bundled as part of
 this software distribution.
 
 =head1 METHODS
@@ -49,11 +49,11 @@ Valid paramters are:
 
 Valid keys for the F<classes> parameter are:
 
-  addressbook - the App::Addex::AddressBook subclass to use
-  output      - an array of output producers
+  addressbook - the App::Addex::AddressBook subclass to use (required)
+  output      - an array of output producers (required)
 
-At least one of these three parameters must be given or an exception will be
-thrown.
+For each class given, an entry in C<%arg> may be given, which will be used to
+initialize the plugin before use.
 
 =cut
 
@@ -69,21 +69,22 @@ sub new {
     my $class = $arg->{classes}{$core}
       or Carp::confess "no $core class provided";
 
-    $self->{$core} = $self->_learn_plugin($class, $arg->{$class});
+    $self->{$core} = $self->_initialize_plugin($class, $arg->{$class});
   }
 
-  my @output_classes = @{ $arg->{classes}{output} || [] };
-  # XXX: move the above "plugins" into here, including the confess
+  my @output_classes = @{ $arg->{classes}{output} || [] }
+    or Carp::confess "no output classes provided";
+
   my @output_plugins;
   for my $class (@output_classes) {
-    push @output_plugins, $self->_learn_plugin($class, $arg->{$class});
+    push @output_plugins, $self->_initialize_plugin($class, $arg->{$class});
   }
   $self->{output} = \@output_plugins;
 
   return bless $self => $class;
 }
 
-sub _learn_plugin {
+sub _initialize_plugin {
   my ($self, $class, $arg) = @_;
 
   eval "require $class" or die;
@@ -102,7 +103,7 @@ sub addressbook { $_[0]->{addressbook} }
 
 =head2 output_plugins
 
-This method returns all the output plugin objects.
+This method returns all of the output plugin objects.
 
 =cut
 

@@ -24,10 +24,6 @@ our $VERSION = '0.002';
 
 =head1 METHODS
 
-B<Achtung!>  The API to this code may very well change.  It is almost certain
-to be broken into smaller pieces, to support alternate sources of entries, and
-it might just get plugins.
-
 =head2 new
 
   my $addex = App::Addex::AddressBook->new(\%arg);
@@ -45,8 +41,8 @@ sub new {
 
   my @entries = $addex->entries;
 
-This method returns the entries in the address book.  Its behavior in scalar
-context is not yet defined.
+This method returns the entries in the address book as L<App::Addex::Entry>
+objects.  Its behavior in scalar context is not yet defined.
 
 This method should be implemented by a address-book-implementation-specific
 subclass.

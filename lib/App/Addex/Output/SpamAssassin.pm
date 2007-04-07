@@ -5,11 +5,10 @@ use warnings;
 package App::Addex::Output::SpamAssassin;
 
 use Carp ();
-use Sub::Install ();
 
 =head1 NAME
 
-App::Addex - generate mail tool configuration from an address book
+App::Addex::Output::SpamAssassin - generate SpamAssassin whitelists from an address book
 
 =head1 VERSION
 
@@ -21,23 +20,22 @@ version 0.002
 
 our $VERSION = '0.002';
 
-=head1 SYNOPSIS
+=head1 DESCRIPTION
 
-This module iterates through all the entries in an address book and produces
-configuration files for F<mutt>, F<procmail>, and F<spamassassin> based on that
-data.
-
-It is meant to be run with the F<aaabook> command, which is bundled as part of
-this software distribution.
+This plugin produces a file that contains a list of SpamAssassin whitelist
+declarations.
 
 =head1 METHODS
 
-B<Achtung!>  The API to this code may very well change.  It is almost certain
-to be broken into smaller pieces, to support alternate sources of entries, and
-it might just get plugins.
-
 =head2 new
 
+  my $addex = App::Addex::Output::SpamAssassin->new(\%arg);
+
+This method returns a new Addex SpamAssassin outputter.
+
+Valid arguments are:
+
+  filename - the file to which to write spamassassin configuration
 
 =cut
 
@@ -62,8 +60,7 @@ sub _output {
 
 =head2 process_entry
 
-If requested, the F<whitelists> file will contain a list of C<whitelist_from>
-lines, whitelisting each email address seen in the address book.
+This method does the actual writing of configuration to the file.
 
 =cut
 

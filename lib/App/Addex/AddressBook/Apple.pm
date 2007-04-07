@@ -23,26 +23,9 @@ our $VERSION = '0.002';
 
 =head1 SYNOPSIS
 
-This module iterates through all the entries in an Apple Address Book and
-produces configuration files for F<mutt>, F<procmail>, and F<spamassassin>
-based on that data.
-
-It is meant to be run with the F<aaabook> command, which is bundled as part of
-this software distribution.
-
-=head1 METHODS
-
-B<Achtung!>  The API to this code may very well change.  It is almost certain
-to be broken into smaller pieces, to support alternate sources of people, and
-it might just get plugins.
-
-=cut
-
-=head2 _glue
-
-  my $glue = $abook->_glue;
-
-This method returns the Mac::Glue "glue" for the Apple Address book.
+This module implements the L<App::Addex::AddressBook> interface for Mac OS X's
+Address Book application, using L<Mac::Glue> to get entries from the address
+book.
 
 =cut
 
@@ -74,14 +57,6 @@ sub _entrify {
     fields => \%fields,
   });
 }
-
-=head2 entries
-
-  my @entries = $addex->entires;
-
-This method returns the entries in the Address Book as Addex Entry objects.
-
-=cut
 
 sub entries {
   my ($self) = @_;

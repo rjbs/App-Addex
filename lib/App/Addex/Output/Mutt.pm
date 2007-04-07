@@ -20,11 +20,21 @@ version 0.002
 
 our $VERSION = '0.002';
 
-=head1 METHODS
+=head1 DESCRIPTION
 
-B<Achtung!>  The API to this code may very well change.  It is almost certain
-to be broken into smaller pieces, to support alternate sources of entries, and
-it might just get plugins.
+This plugin produces a file that contains a list of alias lines.  The first
+email address for each entry will be aliased to the entry's aliasified nickname
+and name.  Every other address will be aliased to one of those with an
+appended, incrementing counter.  The entry's name is added as the alias's "real
+name."
+
+If the entry has a "folder" value (given as a line in the card's "notes" that
+looks like "folder: value") a save-hook is created to save mail from the entry
+to that folder and a mailboxes line is created for the folder.  If the entry
+has a "sig" value, a send-hook is created to use that signature when composing
+a message to the entry.
+
+=head1 METHODS
 
 =head2 new
 
@@ -32,12 +42,18 @@ it might just get plugins.
 
 This method returns a new Addex mutt outputter.
 
+Valid arguments are:
+
+  filename - the file to which to write mutt configuration
+
 =cut
 
 sub new {
   my ($class, $arg) = @_;
 
   my $self = bless {} => $class;
+
+  Carp::croak "no filename argument given for $class";
 
   open my $fh, '>', $arg->{filename}
     or Carp::croak "couldn't open output file $arg->{filename}: $!";
@@ -56,19 +72,9 @@ sub _output {
 
 =head2 process_entry
 
-=head3 mutt configuration
+  $mutt_outputter->process_entry($addex, $entry);
 
-If requested, the F<muttrc> file will contain a list of alias lines.  The first
-email address for each entry will be aliased to the entry's aliasified
-nickname and name.  Every other address will be aliased to one of those with an
-appended, incrementing counter.  The entry's name is added as the alias's
-"real name."
-
-If the entry has a "folder" value (given as a line in the card's "notes" that
-looks like "folder: value") a save-hook is created to save mail from the entry
-to that folder and a mailboxes line is created for the folder.  If the entry
-has a "sig" value, a send-hook is created to use that signature when composing
-a message to the entry.
+This method does the actual writing of configuration to the file.
 
 =cut
 
