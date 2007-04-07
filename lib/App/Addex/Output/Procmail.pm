@@ -43,6 +43,8 @@ Valid arguments are:
 sub new {
   my ($class, $arg) = @_;
 
+  Carp::croak "no filename argument given for $class" unless $arg->{filename};
+
   my $self = bless {} => $class;
 
   open my $fh, '>', $arg->{filename}
