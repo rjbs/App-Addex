@@ -4,8 +4,6 @@ use warnings;
 
 package App::Addex;
 
-use App::Addex::Entry;
-
 use Carp ();
 use Sub::Install ();
 
@@ -46,6 +44,8 @@ This method returns a new Addex.
 
 Valid paramters are:
 
+  addressbook_class - the App::Addex::AddressBook subclass to use
+
   muttrc     - the file name to which to output mutt configuration
   procmailrc - the file name to which to output procmail configuration
   whitelists - the file name to which to output spamassassin whitelists
@@ -58,14 +58,34 @@ thrown.
 sub new {
   my ($class, $arg) = @_;
 
-  my $self = bless $arg => $class;
-
   Carp::confess
     "at least one of procmailrc, muttrc, or whitelists must be provided"
     unless $arg->{muttrc} or $arg->{procmailrc} or $arg->{whitelists};
 
-  return $self;
+  Carp::confess "no addressbook_class provided" if ! $arg->{addressbook_class};
+
+  my $self = {
+    muttrc      => $arg->{muttrc},
+    procmailrc  => $arg->{procmailrc},
+    whitelists  => $arg->{whitelists},
+  };
+
+  # XXX: refactor and pass in config for each class from config
+  eval "require $arg->{addressbook_class}" or die;
+  $self->{addressbook} = $arg->{addressbook_class}->new;
+
+  return bless $self => $class;
 }
+
+=head2 addressbook
+
+  my $abook = $addex->addressbook;
+
+This method returns the App::Addex::AddressBook object.
+
+=cut
+
+sub addressbook { $_[0]->{addressbook} }
 
 =head2 muttrc
 
@@ -158,22 +178,6 @@ BEGIN {
   });
 }
 
-=head2 entries
-
-  my @entries = $addex->entries;
-
-This method returns the entries in the address book.  Its behavior in scalar
-context is not yet defined.
-
-This method should be implemented by a address-book-implementation-specific
-subclass.
-
-=cut
-
-sub entries {
-  Carp::confess "no behavior defined for virtual method entries";
-}
-
 =head2 run
 
   App::Addex::Apple->new({ ... })->run;
@@ -214,7 +218,7 @@ lines, whitelisting each email address seen in the address book.
 sub run {
   my ($self) = @_;
 
-  for my $entry ($self->entries) {
+  for my $entry ($self->addressbook->entries) {
     my $name   = $self->asciify($entry->name);
     my @emails = $entry->emails;
 

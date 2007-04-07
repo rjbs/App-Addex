@@ -26,7 +26,7 @@ information, consult L<App::Addex::Apple>.
 
 =cut
 
-use App::Addex::Apple;
+use App::Addex;
 use Getopt::Long::Descriptive;
 
 my ($opt, $usage) = describe_options(
@@ -39,7 +39,9 @@ my ($opt, $usage) = describe_options(
 die "you must supply either --procmailrc or --muttrc or --whitelists\n"
   unless $opt->{procmailrc} or $opt->{muttrc} or $opt->{whitelists};
 
-my $addex = App::Addex::Apple->new({
+my $addex = App::Addex->new({
+  addressbook_class => 'App::Addex::AddressBook::Apple',
+
   procmailrc => $opt->{procmailrc},
   muttrc     => $opt->{muttrc},
   whitelists => $opt->{whitelists},

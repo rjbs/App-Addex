@@ -2,8 +2,8 @@
 use strict;
 use warnings;
 
-package App::Addex::Apple;
-use base qw(App::Addex);
+package App::Addex::AddressBook::Apple;
+use base qw(App::Addex::AddressBook);
 
 use Mac::Glue qw(:glue);
 

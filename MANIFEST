@@ -10,7 +10,8 @@ inc/Module/Install/Scripts.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 lib/App/Addex.pm
-lib/App/Addex/Apple.pm
+lib/App/Addex/AddressBook.pm
+lib/App/Addex/AddressBook/Apple.pm
 lib/App/Addex/Entry.pm
 LICENSE
 Makefile.PL
