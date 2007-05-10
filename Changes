@@ -1,5 +1,8 @@
 Revision history for App-Addex
 
+0.005     2007-05-09
+          fixed a really stupid, broken test
+
 0.004     2007-05-09
           ensure that new plugins are getting hashref args
 
