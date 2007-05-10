@@ -1,5 +1,8 @@
 Revision history for App-Addex
 
+0.004     2007-05-09
+          ensure that new plugins are getting hashref args
+
 0.003     2007-05-05
           change procmail output to use . for folder paths
 

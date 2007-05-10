@@ -14,13 +14,13 @@ App::Addex - generate mail tool configuration from an address book
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
   $Id$
 
 =cut
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 =head1 DESCRIPTION
 
@@ -88,7 +88,7 @@ sub _initialize_plugin {
   my ($self, $class, $arg) = @_;
 
   eval "require $class" or die;
-  return $class->new($arg ? $arg : ());
+  return $class->new($arg ? $arg : {});
 }
 
 =head2 addressbook
