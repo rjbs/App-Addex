@@ -5,8 +5,6 @@ use warnings;
 package App::Addex;
 
 use Carp ();
-# use Encode ();
-# use Unicode::Normalize ();
 
 =head1 NAME
 
@@ -14,13 +12,13 @@ App::Addex - generate mail tool configuration from an address book
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
   $Id$
 
 =cut
 
-our $VERSION = '0.006';
+our $VERSION = '0.007';
 
 =head1 DESCRIPTION
 
