@@ -12,13 +12,13 @@ App::Addex::Output::Mutt - generate mutt configuration from an address book
 
 =head1 VERSION
 
-version 0.002
+version 0.007
 
   $Id$
 
 =cut
 
-our $VERSION = '0.002';
+our $VERSION = '0.007';
 
 =head1 DESCRIPTION
 
@@ -115,8 +115,20 @@ sub process_entry {
   # It's not that you're expected to -use- these aliases, but they allow
   # mutt's reverse_alias to do its thing.
   if (@emails > 1) {
+    my %label_count;
+
+    if (defined(my $label = $emails[0]->label)) {
+      $self->_output("alias $_-$label $emails[0] ($name)") for @aliases;
+      $label_count{$label} = 1;
+    }
+
     for my $i (1 .. $#emails) {
-      $self->_output("alias $aliases[0]-$i $emails[$i] ($name)");
+      my $label = $emails[$i]->label;
+      $label_count{$label}++;
+      my $alias = defined $label ? "$aliases[0]-$label" : $aliases[0];
+      $alias .= "-" . $label_count{$label} - 1 if $label_count{$label} > 1;
+
+      $self->_output("alias $alias $emails[$i] ($name)");
     }
   }
 }
