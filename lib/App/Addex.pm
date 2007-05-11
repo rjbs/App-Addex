@@ -87,7 +87,10 @@ sub new {
 sub _initialize_plugin {
   my ($self, $class, $arg) = @_;
 
+  # in most cases, this won't be needed, since the App::Addex::Config will have
+  # loaded plugins as a side effect, but let's be cautious -- rjbs, 2007-05-10
   eval "require $class" or die;
+
   return $class->new($arg ? $arg : {});
 }
 

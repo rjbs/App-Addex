@@ -51,7 +51,9 @@ sub change_section {
   $self->{data}{ $self->{section} } ||= {};
   return if $self->{__PACKAGE__}{$section};
 
-  eval "require $section" or die;
+  eval "require $section"
+    or die "couldn't load plugin $section named on config: $@";
+
   my $conf = $self->{__PACKAGE__}{$section} = {};
 
   if ($section->can('multivalue_args')) {
@@ -68,7 +70,7 @@ sub set_value {
 
   my $mva = $self->{__PACKAGE__}->{ $self->{section} }->{multivalue_args};
 
-  if (grep { $_ eq $name } @{ $mva || [] }) {
+  if (grep { $_ eq $name } @$mva) {
     $section->{$name} ||= [];
     push @{ $section->{$name} }, $value;
     return;
