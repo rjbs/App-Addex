@@ -10,7 +10,7 @@ version_from  ('lib/App/Addex.pm');
 
 install_script('bin/addex');
 
-requires('Config::Tiny'              => 0.00); # minimum unknown
+requires('Config::IniHash'           => 0.00); # any version should be OK
 requires('File::HomeDir'             => 0.00); # minimum unknown
 requires('File::Spec'                => 0.00); # minimum unknown
 requires('Getopt::Long::Descriptive' => 0.06); # for %c in format
