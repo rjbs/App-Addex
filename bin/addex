@@ -1,0 +1,65 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+package App::Addex::addex;
+
+=head1 NAME
+
+addex - create mail helper files for address book entries
+
+=head1 VERSION
+
+version 0.001
+
+  $Id$
+
+=cut
+
+our $VERSION = '0.001';
+
+=head1 DESCRIPTION
+
+The F<addex> command produces configuration for various email tools based on
+your address book.  For more information, consult L<App::Addex>.
+
+=cut
+
+use App::Addex;
+use App::Addex::Config;
+use Config::IniHash ();
+use File::HomeDir;
+use File::Spec;
+use Getopt::Long::Descriptive;
+
+my ($opt, $usage) = describe_options(
+  '%c %o',
+  [ 'config|c=s',     'config file name',
+    { default => File::Spec->catfile(File::HomeDir->my_home, '.addex') }   ],
+);
+
+my $config = App::Addex::Config->read_file($opt->{config});
+
+my $addex = App::Addex->new($config);
+
+$addex->run;
+
+=head1 AUTHOR
+
+Ricardo SIGNES, C<< <rjbs@cpan.org> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests through the web interface at
+L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
+notified of progress on your bug as I make changes.
+
+=head1 COPYRIGHT
+
+Copyright 2006-2007 Ricardo Signes, all rights reserved.
+
+This program is free software; you may redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
+
