@@ -1,5 +1,8 @@
 Revision history for App-Addex
 
+0.006     2007-05-10
+          introduce App::Addex::Config, making config files much easier
+
 0.005     2007-05-09
           fixed a really stupid, broken test
 

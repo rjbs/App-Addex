@@ -26,6 +26,7 @@ your address book.  For more information, consult L<App::Addex>.
 =cut
 
 use App::Addex;
+use App::Addex::Config;
 use Config::IniHash ();
 use File::HomeDir;
 use File::Spec;
@@ -37,21 +38,7 @@ my ($opt, $usage) = describe_options(
     { default => File::Spec->catfile(File::HomeDir->my_home, '.addex') }   ],
 );
 
-my $config = Config::IniHash::ReadINI($opt->{config}, ({
-  heredoc    => 0,
-  systemvars => 0,
-  case       => 'sensitive',
-  sectionorder   => 0,
-  allow_multiple => 1,
-});
-
-die "couldn't read config file $opt->{config}\n" unless $config;
-
-die 'illegal section "classes" in config' if exists $config->{classes};
-
-$config->{classes} = delete $config->{_};
-
-$config->{classes}{output} = [ split /,\s*/, $config->{classes}{output} ];
+my $config = App::Addex::Config->read_file($opt->{config});
 
 my $addex = App::Addex->new($config);
 
