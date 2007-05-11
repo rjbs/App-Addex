@@ -1,5 +1,9 @@
 Revision history for App-Addex
 
+0.007     2007-05-11
+          App::Addex::Entry::EmailAddress
+          mutt output includes address labels in aliases if available
+
 0.006     2007-05-10
           introduce App::Addex::Config, making config files much easier
 
