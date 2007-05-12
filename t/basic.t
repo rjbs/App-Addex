@@ -4,7 +4,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 3;
+use Test::More tests => 6;
 
 use_ok('App::Addex');
 
@@ -31,3 +31,37 @@ $addex->run;
 
 is(@calls, 6, "callback called twice");
 
+eval { App::Addex->new; };
+
+like(
+  $@,
+  qr/no addressbook class/,
+  "exception thrown when no addressbook class given",
+);
+
+eval {
+  App::Addex->new({
+    classes => { addressbook => 'App::Addex::AddressBook::Test' }
+  });
+};
+
+like(
+  $@,
+  qr/no output class/,
+  "exception thrown when no output classes given",
+);
+
+eval {
+  App::Addex->new({
+    classes => {
+      addressbook => 'App::Addex::AddressBook::Test',
+      output      => [ 'App::Addex::FailsToLoad' ],
+    }
+  });
+};
+
+like(
+  $@,
+  qr/FailsToLoad/,
+  "if a plugin fails to load, the exception is propagated",
+);

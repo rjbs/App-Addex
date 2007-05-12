@@ -4,7 +4,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 3;
+use Test::More tests => 4;
 
 my $class = 'App::Addex::Output::ToFile';
 use_ok($class);
@@ -16,3 +16,8 @@ like($@, qr/no filename/, 'filename is a required arg');
 eval { $class->new({ filename => '/' }); };
 like($@, qr/couldn't open/, 'filename is a required arg');
 
+# WARNING!  This test relies on the object guts. -- rjbs, 2007-05-11
+my $self = $class->new({ filename => \(my $buffer) });
+close $self->{fh};
+eval { $self->output("line") };
+like($@, qr/couldn't write/, 'exception raised if output fails');
