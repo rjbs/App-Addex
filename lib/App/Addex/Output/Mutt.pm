@@ -127,7 +127,7 @@ sub process_entry {
       $label = '' unless defined $label;
       $label_count{$label}++;
       my $alias = defined $label ? "$aliases[0]-$label" : $aliases[0];
-      $alias .= "-" . $label_count{$label} - 1 if $label_count{$label} > 1;
+      $alias .= "-" . ($label_count{$label} - 1) if $label_count{$label} > 1;
 
       $self->_output("alias $alias $emails[$i] ($name)");
     }

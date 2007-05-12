@@ -41,7 +41,7 @@ it might just get plugins.
 
 This method returns a new Addex.
 
-Valid paramters are:
+Valid parameters are:
 
   classes    - a hashref of plugin/class pairs, described below
 
@@ -118,7 +118,7 @@ sub output_plugins {
   App::Addex->new({ ... })->run;
 
 This method performs all the work expected of an Addex: it iterates through the
-entries, writing the relevant information to the relevant files.
+entries, invoking the output plugins for each one.
 
 =cut
 
