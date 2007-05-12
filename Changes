@@ -1,5 +1,9 @@
 Revision history for App-Addex
 
+0.008     2007-05-11
+          wrote tests for just about everything
+          fix mutt labels to start at with 1 after the first of each label
+
 0.007     2007-05-11
           App::Addex::Entry::EmailAddress
           mutt output includes address labels in aliases if available
