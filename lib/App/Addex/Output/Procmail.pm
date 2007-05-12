@@ -3,8 +3,7 @@ use strict;
 use warnings;
 
 package App::Addex::Output::Procmail;
-
-use Carp ();
+use base qw(App::Addex::Output::ToFile);
 
 =head1 NAME
 
@@ -12,13 +11,13 @@ App::Addex::Output::Procmail - generate procmail recipes from an address book
 
 =head1 VERSION
 
-version 0.003
+version 0.008
 
   $Id$
 
 =cut
 
-our $VERSION = '0.003';
+our $VERSION = '0.008';
 
 =head1 DESCRIPTION
 
@@ -29,44 +28,20 @@ its addresses to the given folder.
 Forward slashes in the folder name are converted to dots, showing my bias
 toward Courier IMAP.
 
+=head1 CONFIGURATION
+
+The valid configuration parameters for this plugin are:
+
+  filename - the filename to which to write the procmail recipes
+
 =head1 METHODS
 
-=head2 new
-
-  my $addex = App::Addex::Output::Procmail->new(\%arg);
-
-This method returns a new Addex procmail outputter.
-
-Valid arguments are:
-
-  filename - the file to which to write procmail recipes
-
-=cut
-
-sub new {
-  my ($class, $arg) = @_;
-
-  Carp::croak "no filename argument given for $class" unless $arg->{filename};
-
-  my $self = bless {} => $class;
-
-  open my $fh, '>', $arg->{filename}
-    or Carp::croak "couldn't open output file $arg->{filename}: $!";
-
-  $self->{fh} = $fh;
-
-  return $self;
-}
-
-sub _output {
-  my ($self, $line) = @_;
-  print { $self->{fh} } "$line\n"
-    or Carp::croak "couldn't write to output file: $!";
-}
+App::Addex::Output::Procmail is a App::Addex::Output::ToFile subclass, and
+inherits its methods.
 
 =head2 process_entry
 
-  $mutt_outputter->process_entry($addex, $entry);
+  $procmail_outputter->process_entry($addex, $entry);
 
 This method does the actual writing of configuration to the file.
 
@@ -82,10 +57,10 @@ sub process_entry {
   my @emails = $entry->emails;
 
   for my $email (@emails) {
-    $self->_output(":0");
-    $self->_output("* From:.*$email");
-    $self->_output(".$folder/");
-    $self->_output(q{});
+    $self->output(":0");
+    $self->output("* From:.*$email");
+    $self->output(".$folder/");
+    $self->output(q{});
   }
 
 }

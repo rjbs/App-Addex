@@ -3,8 +3,7 @@ use strict;
 use warnings;
 
 package App::Addex::Output::SpamAssassin;
-
-use Carp ();
+use base qw(App::Addex::Output::ToFile);
 
 =head1 NAME
 
@@ -12,55 +11,35 @@ App::Addex::Output::SpamAssassin - generate SpamAssassin whitelists from an addr
 
 =head1 VERSION
 
-version 0.002
+version 0.008
 
   $Id$
 
 =cut
 
-our $VERSION = '0.002';
+our $VERSION = '0.008';
 
 =head1 DESCRIPTION
 
 This plugin produces a file that contains a list of SpamAssassin whitelist
 declarations.
 
+=head1 CONFIGURATION
+
+The valid configuration parameters for this plugin are:
+
+  filename - the filename to which to write the whitelists
+
 =head1 METHODS
 
-=head2 new
-
-  my $addex = App::Addex::Output::SpamAssassin->new(\%arg);
-
-This method returns a new Addex SpamAssassin outputter.
-
-Valid arguments are:
-
-  filename - the file to which to write spamassassin configuration
+App::Addex::Output::SpamAssassin is a App::Addex::Output::ToFile subclass, and
+inherits its methods.
 
 =cut
 
-sub new {
-  my ($class, $arg) = @_;
-
-  Carp::croak "no filename argument given for $class" unless $arg->{filename};
-
-  my $self = bless {} => $class;
-
-  open my $fh, '>', $arg->{filename}
-    or Carp::croak "couldn't open output file $arg->{filename}: $!";
-
-  $self->{fh} = $fh;
-
-  return $self;
-}
-
-sub _output {
-  my ($self, $line) = @_;
-  print { $self->{fh} } "$line\n"
-    or Carp::croak "couldn't write to output file: $!";
-}
-
 =head2 process_entry
+
+  $sa_outputter->process_entry($addex, $entry);
 
 This method does the actual writing of configuration to the file.
 
@@ -69,7 +48,7 @@ This method does the actual writing of configuration to the file.
 sub process_entry {
   my ($self, $addex, $entry) = @_;
 
-  $self->_output("whitelist_from $_") for $entry->emails;
+  $self->output("whitelist_from $_") for $entry->emails;
 }
 
 =head1 AUTHOR

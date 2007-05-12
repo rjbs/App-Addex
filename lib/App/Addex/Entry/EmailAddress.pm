@@ -12,7 +12,7 @@ App::Addex::Entry::EmailAddress - an address book entry's email address
 
 version 0.007
 
-  $Id: /my/cs/projects/App-Addex-AddressBook-Apple/trunk/lib/App/Addex/AddressBook/Apple.pm 31584 2007-05-10T19:06:36.962826Z rjbs  $
+  $Id$
 
 =cut
 

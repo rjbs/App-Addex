@@ -4,7 +4,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More 'no_plan';
+use Test::More tests => 5;
 
 use_ok('App::Addex');
 

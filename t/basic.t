@@ -4,7 +4,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More 'no_plan';
+use Test::More tests => 3;
 
 use_ok('App::Addex');
 
@@ -29,5 +29,5 @@ isa_ok($addex, 'App::Addex');
 
 $addex->run;
 
-is(@calls, 2, "callback called twice");
+is(@calls, 6, "callback called twice");
 

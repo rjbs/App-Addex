@@ -51,13 +51,17 @@ sub change_section {
   $self->{data}{ $self->{section} } ||= {};
   return if $self->{__PACKAGE__}{$section};
 
+  # Consider using Params::Util to validate class name.  -- rjbs, 2007-05-11
+  Carp::croak "invalid section name '$section' in configuration"
+    unless $section =~ /\A[A-Z0-9]+(?:::[A-Z0-9]+)*\z/i;
+  
   eval "require $section"
-    or die "couldn't load plugin $section named on config: $@";
+    or Carp::croak "couldn't load plugin $section named on config: $@";
 
   my $conf = $self->{__PACKAGE__}{$section} = {};
 
   if ($section->can('multivalue_args')) {
-    $conf->{multivalue_args} = $section->multivalue_args;
+    $conf->{multivalue_args} = [ $section->multivalue_args ];
   } else {
     $conf->{multivalue_args} = [ ];
   }
