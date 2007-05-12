@@ -1,0 +1,24 @@
+Revision history for App-Addex
+
+0.008     2007-05-11
+          wrote tests for just about everything
+          fix mutt labels to start at with 1 after the first of each label
+
+0.007     2007-05-11
+          App::Addex::Entry::EmailAddress
+          mutt output includes address labels in aliases if available
+
+0.006     2007-05-10
+          introduce App::Addex::Config, making config files much easier
+
+0.005     2007-05-09
+          fixed a really stupid, broken test
+
+0.004     2007-05-09
+          ensure that new plugins are getting hashref args
+
+0.003     2007-05-05
+          change procmail output to use . for folder paths
+
+0.001     2007-03-21
+          first release
