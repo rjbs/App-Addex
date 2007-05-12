@@ -11,13 +11,13 @@ App::Addex::Config - read the addex config file
 
 =head1 VERSION
 
-version 0.006
+version 0.008
 
   $Id$
 
 =cut
 
-our $VERSION = '0.006';
+our $VERSION = '0.008';
 
 =head1 DESCRIPTION
 
