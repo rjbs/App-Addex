@@ -1,5 +1,8 @@
 Revision history for App-Addex
 
+0.009     2007-10-24
+          upgrade Module::Install
+
 0.008     2007-05-11
           wrote tests for just about everything
           fix mutt labels to start at with 1 after the first of each label
