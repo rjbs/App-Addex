@@ -17,7 +17,10 @@ eval { $class->new({ filename => '/' }); };
 like($@, qr/couldn't open/, 'filename is a required arg');
 
 # WARNING!  This test relies on the object guts. -- rjbs, 2007-05-11
-my $self = $class->new({ filename => \(my $buffer) });
-close $self->{fh};
-eval { $self->output("line") };
-like($@, qr/couldn't write/, 'exception raised if output fails');
+{
+  local $SIG{__WARN__} = sub { }; # avoid 'print on closed fh' warning
+  my $self = $class->new({ filename => \(my $buffer) });
+  close $self->{fh};
+  eval { $self->output("line") };
+  like($@, qr/couldn't write/, 'exception raised if output fails');
+}

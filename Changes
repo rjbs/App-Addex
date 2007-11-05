@@ -1,5 +1,10 @@
 Revision history for App-Addex
 
+0.010     2007-11-05
+          add base Output class to make future expansion easier
+          add finalize output method
+          suppress some warnings during testing
+
 0.009     2007-10-24
           upgrade Module::Install
 

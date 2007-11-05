@@ -3,6 +3,9 @@ use strict;
 use warnings;
 
 package App::Addex::Output::ToFile;
+use App::Addex::Output;
+BEGIN { our @ISA = 'App::Addex::Output' }
+
 use Carp ();
 
 =head1 NAME
@@ -11,11 +14,11 @@ App::Addex::Output::ToFile - base class for output plugins that write to files
 
 =head1 VERSION
 
-version 0.009
+version 0.010
 
 =cut
 
-our $VERSION = '0.009';
+our $VERSION = '0.010';
 
 =head1 DESCRIPTION
 
@@ -43,7 +46,7 @@ sub new {
 
   Carp::croak "no filename argument given for $class" unless $arg->{filename};
 
-  my $self = bless {} => $class;
+  my $self = $class->SUPER::new;
 
   open my $fh, '>', $arg->{filename}
     or Carp::croak "couldn't open output file $arg->{filename}: $!";
@@ -66,6 +69,12 @@ sub output {
 
   print { $self->{fh} } "$line\n"
     or Carp::croak "couldn't write to output file: $!";
+}
+
+sub finalize {
+  # We'll just delete this ref and let garbage collection cause closing if
+  # needed. -- rjbs, 2007-11-05
+  delete $_[0]->{fh};
 }
 
 =head1 AUTHOR

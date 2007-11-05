@@ -12,11 +12,11 @@ App::Addex - generate mail tool configuration from an address book
 
 =head1 VERSION
 
-version 0.009
+version 0.010
 
 =cut
 
-our $VERSION = '0.009';
+our $VERSION = '0.010';
 
 =head1 DESCRIPTION
 
@@ -127,6 +127,10 @@ sub run {
     for my $plugin ($self->output_plugins) {
       $plugin->process_entry($self, $entry);
     }
+  }
+
+  for my $plugin ($self->output_plugins) {
+    $plugin->finalize;
   }
 }
 
