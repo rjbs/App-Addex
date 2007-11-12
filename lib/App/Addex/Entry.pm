@@ -18,11 +18,11 @@ App::Addex::Entry - an entry in your address book
 
 =head1 VERSION
 
-version 0.011
+version 0.012
 
 =cut
 
-our $VERSION = '0.011';
+our $VERSION = '0.012';
 
 =head1 METHODS
 

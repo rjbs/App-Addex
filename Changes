@@ -1,5 +1,10 @@
 Revision history for App-Addex
 
+0.012     2007-11-12
+          stop brokenly reaching into guts of Config::INI::Reader object
+            (thanks, JCAP!)
+          remove spurious 'use' statement in addex program
+
 0.011     2007-11-11
           use Mixin::ExtraFields::Param for ->field method (dogfood!)
           remove spurious Mac::Glue prereq
