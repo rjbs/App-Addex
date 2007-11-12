@@ -14,11 +14,11 @@ App::Addex::AddressBook - the address book that addex will consult
 
 =head1 VERSION
 
-version 0.010
+version 0.011
 
 =cut
 
-our $VERSION = '0.010';
+our $VERSION = '0.011';
 
 =head1 METHODS
 
