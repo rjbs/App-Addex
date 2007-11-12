@@ -27,7 +27,6 @@ your address book.  For more information, consult L<App::Addex>.
 
 use App::Addex;
 use App::Addex::Config;
-use Config::IniHash ();
 use File::HomeDir;
 use File::Spec;
 use Getopt::Long::Descriptive;

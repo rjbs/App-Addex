@@ -68,9 +68,10 @@ sub change_section {
 sub set_value {
   my ($self, $name, $value) = @_;
 
-  my $section = $self->{data}{ $self->{section} } ||= {};
+  my $sec_name = $self->current_section;
+  my $section = $self->{data}{ $sec_name } ||= {};
 
-  my $mva = $self->{__PACKAGE__}->{ $self->{section} }->{multivalue_args};
+  my $mva = $self->{__PACKAGE__}->{ $sec_name }->{multivalue_args};
 
   if (grep { $_ eq $name } @$mva) {
     $section->{$name} ||= [];
@@ -79,8 +80,7 @@ sub set_value {
   }
 
   if (exists $section->{$name}) {
-    Carp::croak
-      "multiple values given for property $name in section $self->{section}";
+    Carp::croak "multiple values given for property $name in section $sec_name";
   }
 
   $section->{$name} = $value;
