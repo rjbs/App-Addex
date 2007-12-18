@@ -1,5 +1,9 @@
 Revision history for App-Addex
 
+0.013     2007-12-17
+          declare that we require 5.008; easier than fixing tests, but patches
+            welcome, I guess
+
 0.012     2007-11-12
           stop brokenly reaching into guts of Config::INI::Reader object
             (thanks, JCAP!)
