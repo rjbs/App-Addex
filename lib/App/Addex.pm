@@ -2,6 +2,10 @@
 use strict;
 use warnings;
 
+# because tests use open to open a string-ref, and I am not interested in ever
+# supporting this module on ancient perls -- rjbs, 2007-12-17
+use 5.008;
+
 package App::Addex;
 
 use Carp ();
@@ -12,11 +16,11 @@ App::Addex - generate mail tool configuration from an address book
 
 =head1 VERSION
 
-version 0.012
+version 0.013
 
 =cut
 
-our $VERSION = '0.012';
+our $VERSION = '0.013';
 
 =head1 DESCRIPTION
 
