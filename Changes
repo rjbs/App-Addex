@@ -4,6 +4,8 @@ Revision history for App-Addex
           AddressBook objects can now refer back to the App::Addex object
           experimental "plugin" classes
 
+          EmailAddress objects may be "send" or "receive" or both now
+
 0.013     2007-12-17
           declare that we require 5.008; easier than fixing tests, but patches
             welcome, I guess
