@@ -14,26 +14,42 @@ App::Addex::AddressBook - the address book that addex will consult
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =cut
 
-our $VERSION = '0.013';
+our $VERSION = '0.014';
 
 =head1 METHODS
 
 =head2 new
 
-  my $addex = App::Addex::AddressBook->new(\%arg);
+  my $addr_book = App::Addex::AddressBook->new(\%arg);
 
 This method returns a new AddressBook.  Its implementation details are left up
 to the subclasses, but it must accept a hashref as its first argument.
 
+Valid arguments are:
+
+  addex - required; the App::Addex object using this address book
+
 =cut
 
 sub new {
-  bless {} => $_[0];
+  my ($class, $arg) = @_;
+  Carp::croak "no addex argument provided" unless $arg->{addex};
+  bless { addex => $arg->{addex} } => $class;
 }
+
+=head2 addex
+
+  my $addex = $addr_book->addex;
+
+This returns the App::Addex object with which the address book is associated.
+
+=cut
+
+sub addex { $_[0]->{addex} }
 
 =head2 entries
 
