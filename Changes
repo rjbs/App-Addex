@@ -1,5 +1,9 @@
 Revision history for App-Addex
 
+0.014     2008-02-17
+          AddressBook objects can now refer back to the App::Addex object
+          experimental "plugin" classes
+
 0.013     2007-12-17
           declare that we require 5.008; easier than fixing tests, but patches
             welcome, I guess

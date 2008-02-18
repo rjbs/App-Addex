@@ -11,11 +11,11 @@ App::Addex::Output::SpamAssassin - generate SpamAssassin whitelists from an addr
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =cut
 
-our $VERSION = '0.013';
+our $VERSION = '0.014';
 
 =head1 DESCRIPTION
 
@@ -46,7 +46,7 @@ This method does the actual writing of configuration to the file.
 sub process_entry {
   my ($self, $addex, $entry) = @_;
 
-  $self->output("whitelist_from $_") for $entry->emails;
+  $self->output("whitelist_from $_") for grep { $_->sends } $entry->emails;
 }
 
 =head1 AUTHOR

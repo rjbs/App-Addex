@@ -11,11 +11,11 @@ App::Addex::Output::Mutt - generate mutt configuration from an address book
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =cut
 
-our $VERSION = '0.013';
+our $VERSION = '0.014';
 
 =head1 DESCRIPTION
 
@@ -68,39 +68,41 @@ sub process_entry {
 
   if ($folder) {
     $folder =~ tr{/}{.};
-    $self->output("save-hook ~f$_ =$folder") for @emails;
+    $self->output("save-hook ~f$_ =$folder") for grep { $_->sends } @emails;
     $self->output("mailboxes =$folder")
       unless $self->{_saw_folder}{$folder}++;
   }
 
   if ($sig) {
     $self->output(qq{send-hook ~t$_ set signature="~/.sig/$sig"})
-      for @emails;
+      for grep { $_->receives } @emails;
   }
 
   my @aliases
     = grep { defined $_ } map { $self->_aliasify($_) } $entry->nick, $name;
 
-  $self->output("alias $_ $emails[0] ($name)") for @aliases;
+  my ($rcpt_email) = grep { $_->receives } @emails;
+  $self->output("alias $_ $rcpt_email ($name)") for @aliases;
 
   # It's not that you're expected to -use- these aliases, but they allow
   # mutt's reverse_alias to do its thing.
   if (@emails > 1) {
     my %label_count;
 
-    if (defined(my $label = $emails[0]->label)) {
-      $self->output("alias $_-$label $emails[0] ($name)") for @aliases;
+    if (defined(my $label = $rcpt_email->label)) {
+      $self->output("alias $_-$label $rcpt_email ($name)") for @aliases;
       $label_count{$label} = 1;
     }
 
-    for my $i (1 .. $#emails) {
-      my $label = $emails[$i]->label;
+    my @rcpt_emails = grep { $_->receives } @emails;
+    for my $i (1 .. $#rcpt_emails) {
+      my $label = $rcpt_emails[$i]->label;
       $label = '' unless defined $label;
       $label_count{$label}++;
       my $alias = length $label ? "$aliases[0]-$label" : $aliases[0];
       $alias .= "-" . ($label_count{$label} - 1) if $label_count{$label} > 1;
 
-      $self->output("alias $alias $emails[$i] ($name)");
+      $self->output("alias $alias $rcpt_emails[$i] ($name)");
     }
   }
 }

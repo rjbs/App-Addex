@@ -11,11 +11,11 @@ App::Addex::Output::Procmail - generate procmail recipes from an address book
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =cut
 
-our $VERSION = '0.013';
+our $VERSION = '0.014';
 
 =head1 DESCRIPTION
 
@@ -55,6 +55,7 @@ sub process_entry {
   my @emails = $entry->emails;
 
   for my $email (@emails) {
+    next unless $email->sends;
     $self->output(":0");
     $self->output("* From:.*$email");
     $self->output(".$folder/");

@@ -10,11 +10,11 @@ App::Addex::Entry::EmailAddress - an address book entry's email address
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =cut
 
-our $VERSION = '0.013';
+our $VERSION = '0.014';
 
 =head1 SYNOPSIS
 
@@ -35,6 +35,9 @@ Valid arguments are:
   label   - the label for this contact (home, work, etc)
             there is no guarantee that labels are defined or unique
 
+  sends    - if true, this address may send mail; default: true
+  receives - if true, this address may receive mail; default: true
+
 =cut
 
 sub new {
@@ -42,6 +45,10 @@ sub new {
 
   $arg = { address => $arg } if not ref $arg;
   undef $arg->{label} if defined $arg->{label} and not length $arg->{label};
+
+  for (qw(sends receives)) {
+    $arg->{$_} = 1 unless exists $arg->{$_};
+  }
 
   bless $arg => $class;
 }
@@ -67,6 +74,15 @@ This method returns the address label, if any.
 sub label {
   $_[0]->{label}
 }
+
+=head2 sends
+
+=head2 receives
+
+=cut
+
+sub sends    { $_[0]->{sends} }
+sub receives { $_[0]->{receives} }
 
 =head1 AUTHOR
 
