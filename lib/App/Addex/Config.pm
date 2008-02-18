@@ -11,11 +11,11 @@ App::Addex::Config - read the addex config file
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =cut
 
-our $VERSION = '0.013';
+our $VERSION = '0.014';
 
 =head1 DESCRIPTION
 
@@ -35,7 +35,7 @@ sub new {
 
   my $self = $class->SUPER::new;
 
-  $self->{__PACKAGE__}{classes}{multivalue_args} = [ qw(output) ];
+  $self->{__PACKAGE__}{classes}{multivalue_args} = [ qw(output plugin) ];
 
   bless $self => $class;
 }
