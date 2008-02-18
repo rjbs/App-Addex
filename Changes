@@ -1,5 +1,8 @@
 Revision history for App-Addex
 
+0.015     2008-??-??
+          output all label/alias combinations for Output::Mutt
+
 0.014     2008-02-17
           AddressBook objects can now refer back to the App::Addex object
           experimental "plugin" classes

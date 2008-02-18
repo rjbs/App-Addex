@@ -4,7 +4,7 @@ use warnings;
 
 use lib 't/lib';
 
-use Test::More tests => 10;
+use Test::More tests => 9;
 
 use_ok('App::Addex');
 
@@ -52,11 +52,12 @@ like(
   "secondary nick-based alias with label created",
 );
 
-unlike(
-  $buffer,
-  qr/^alias ricardosignes-work-1 rjbs\@example.biz/sm,
-  "we don't created secondary name-based aliases, if nick exists",
-);
+# Why had I ever wanted to assert this? -- rjbs, 2008-02-17
+# unlike(
+#   $buffer,
+#   qr/^alias ricardosignes-work-1 rjbs\@example.biz/sm,
+#   "we don't created secondary name-based aliases, if nick exists",
+# );
 
 like(
   $buffer,
