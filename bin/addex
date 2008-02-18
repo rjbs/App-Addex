@@ -12,8 +12,6 @@ addex - create mail helper files for address book entries
 
 version 0.001
 
-  $Id$
-
 =cut
 
 our $VERSION = '0.001';
