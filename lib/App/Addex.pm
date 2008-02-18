@@ -16,11 +16,11 @@ App::Addex - generate mail tool configuration from an address book
 
 =head1 VERSION
 
-version 0.013
+version 0.014
 
 =cut
 
-our $VERSION = '0.013';
+our $VERSION = '0.014';
 
 =head1 DESCRIPTION
 
@@ -81,17 +81,25 @@ sub new {
   }
   $self->{output} = \@output_plugins;
 
-  return bless $self => $class;
+  my @plugin_classes = @{ $arg->{classes}{plugin} || [] };
+  for my $class (@plugin_classes) {
+    eval "require $class" or die;
+    $class->import(%{ $arg->{$class} || {} });
+  }
+
+  return $self;
 }
 
 sub _initialize_plugin {
   my ($self, $class, $arg) = @_;
+  $arg ||= {};
+  $arg->{addex} = $self;
 
   # in most cases, this won't be needed, since the App::Addex::Config will have
   # loaded plugins as a side effect, but let's be cautious -- rjbs, 2007-05-10
   eval "require $class" or die;
 
-  return $class->new($arg ? $arg : {});
+  return $class->new($arg);
 }
 
 =head2 addressbook
