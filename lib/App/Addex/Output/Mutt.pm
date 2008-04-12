@@ -1,12 +1,10 @@
-#!/usr/bin/perl
 use strict;
 use warnings;
 
 package App::Addex::Output::Mutt;
 use base qw(App::Addex::Output::ToFile);
 
-use Unicode::Normalize qw(normalize);
-use Unicode::UCD 'charinfo';
+use Text::Unidecode ();
 
 =head1 NAME
 
@@ -38,11 +36,27 @@ a message to the entry.
 
 The valid configuration parameters for this plugin are:
 
-  filename - the filename to which to write the Mutt configuration
+  filename  - the filename to which to write the Mutt configuration
+
+  unidecode - if set (to 1) this will transliterate all aliases to ascii before
+              adding them to the file
 
 =head1 METHODS
 
 App::Addex::Output::Mutt is a App::Addex::Output::ToFile subclass, and inherits its methods.
+
+=cut
+
+sub new {
+  my ($class, $arg) = @_;
+  $arg ||= {};
+
+  my $self = $class->SUPER::new($arg);
+
+  $self->{unidecode} = $arg->{unidecode};
+
+  return $self;
+}
 
 =head2 process_entry
 
@@ -52,29 +66,12 @@ This method does the actual writing of configuration to the file.
 
 =cut
 
-# use utf8; print __degrade_to_ascii($_), "\n" for ('Søren', 'Julián', 'Rik');
-sub __degrade_to_ascii {
-  return $_[0] if $_[0] =~ /^[\x01-\x79]*$/;
-  my $decomp = normalize(D => $_[0]);
-  use charnames ':full';
-  my $recomp =
-    join '', map { chr(hex($_->{code})) }
-    # map  { warn $_->{name}, "\n"; $_ }
-    map  {
-      ($_->{name} =~ /^(LATIN \w+ LETTER .) WITH/)
-      ? charinfo(charnames::vianame("$1"))
-      : $_
-    }
-    grep { $_->{code} =~ /[^0]/ }
-    grep { $_->{block} !~ /combin/i }
-    map  { charinfo(ord substr $decomp, $_, 1) }  0 .. length $decomp;
-}
-
 sub _aliasify {
-  my (undef, $text) = @_;
+  my ($self, $text) = @_;
 
   return unless defined $text;
   $text =~ tr/ .'//d;
+  Text::Unidecode::unidecode($text) if $self->{unidecode};
   return lc $text;
 }
 
@@ -100,8 +97,7 @@ sub process_entry {
   }
 
   my @aliases = 
-    map  { __degrade_to_ascii($_) }
-    grep { defined $_ } map { $self->_aliasify($_) } $entry->nick, $name;
+    map { $self->_aliasify($_) } grep { defined } $entry->nick, $name;
 
   my ($rcpt_email) = grep { $_->receives } @emails;
   $self->output("alias $_ $rcpt_email ($name)") for @aliases;

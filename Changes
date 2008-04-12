@@ -1,6 +1,8 @@
 Revision history for App-Addex
 
-0.015     2008-??-??
+0.015     2008-04-12
+          Output::ToFile now opens output filehandles to write utf8
+          add unidecode option for Output::Mutt
           output all label/alias combinations for Output::Mutt
 
 0.014     2008-02-17
