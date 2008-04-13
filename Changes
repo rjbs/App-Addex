@@ -1,5 +1,8 @@
 Revision history for App-Addex
 
+0.016     2008-04-13
+          fix missing prereq
+
 0.015     2008-04-12
           Output::ToFile now opens output filehandles to write utf8
           add unidecode option for Output::Mutt
