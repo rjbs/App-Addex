@@ -30,7 +30,7 @@ isa_ok($have, 'ARRAY', 'we got a hashref back from read_string');
 
 my $want = [
   {
-    '=name' => '_',
+    '=name' => 'classes',
     foo => 1,
     bar => 2,
   },
