@@ -11,11 +11,11 @@ App::Addex::Output - base class for output plugins
 
 =head1 VERSION
 
-version 0.016
+version 0.017
 
 =cut
 
-our $VERSION = '0.016';
+our $VERSION = '0.017';
 
 =head1 DESCRIPTION
 
