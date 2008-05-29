@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 package App::Addex::Config;
-use base qw(Config::INI::Reader);
+use base qw(Config::INI::MVP::Reader);
 
 =head1 NAME
 
@@ -19,72 +19,9 @@ our $VERSION = '0.016';
 
 =head1 DESCRIPTION
 
-The F<addex> config file is an INI file in which some properties may be given
-multiple times to produce multiple values.  These properties will be given
-in the documentation for the relevant plugins.  If multiple values are found
-for an existing property which I<cannot> be given multiple times, an exception
-will be raised.
-
-Each section is assumed to be a plugin which must be loaded and queried for its
-multiple-value properties.
-
 =cut
 
-sub new {
-  my ($class) = @_;
-
-  my $self = $class->SUPER::new;
-
-  $self->{__PACKAGE__}{classes}{multivalue_args} = [ qw(output plugin) ];
-
-  bless $self => $class;
-}
-
-sub starting_section { 'classes' }
-
-sub change_section {
-  my ($self, $section) = @_;
-
-  $self->{section} = $section;
-  $self->{data}{ $self->{section} } ||= {};
-  return if $self->{__PACKAGE__}{$section};
-
-  # Consider using Params::Util to validate class name.  -- rjbs, 2007-05-11
-  Carp::croak "invalid section name '$section' in configuration"
-    unless $section =~ /\A[A-Z0-9]+(?:::[A-Z0-9]+)*\z/i;
-  
-  eval "require $section"
-    or Carp::croak "couldn't load plugin $section named on config: $@";
-
-  my $conf = $self->{__PACKAGE__}{$section} = {};
-
-  if ($section->can('multivalue_args')) {
-    $conf->{multivalue_args} = [ $section->multivalue_args ];
-  } else {
-    $conf->{multivalue_args} = [ ];
-  }
-}
-
-sub set_value {
-  my ($self, $name, $value) = @_;
-
-  my $sec_name = $self->current_section;
-  my $section = $self->{data}{ $sec_name } ||= {};
-
-  my $mva = $self->{__PACKAGE__}->{ $sec_name }->{multivalue_args};
-
-  if (grep { $_ eq $name } @$mva) {
-    $section->{$name} ||= [];
-    push @{ $section->{$name} }, $value;
-    return;
-  }
-
-  if (exists $section->{$name}) {
-    Carp::croak "multiple values given for property $name in section $sec_name";
-  }
-
-  $section->{$name} = $value;
-}
+sub multivalue_args { qw(output plugins) }
 
 =head1 AUTHOR
 
