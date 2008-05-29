@@ -21,7 +21,8 @@ our $VERSION = '0.016';
 
 =cut
 
-sub multivalue_args { qw(output plugins) }
+sub starting_section { 'classes' }
+sub multivalue_args  { qw(output plugin) }
 
 =head1 AUTHOR
 

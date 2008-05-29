@@ -37,19 +37,10 @@ my ($opt, $usage) = describe_options(
 
 my $ini = App::Addex::Config->read_file($opt->{config});
 
-my $root = $ini->[0]{'=name'} eq '_' ? shift @$ini : {};
-
-my $config = {
-  classes => {
-    output => $root->{output},
-    plugin => $root->{plugin},
-  },
-};
-
-# drop the core object;
+my $config = {};
 
 for my $plugin (@$ini) {
-  my $p = $config->{ $plugin->{'=package'} } = {};
+  my $p = $config->{ $plugin->{'=package'} || $plugin->{'=name'} } = {};
   $p->{$_} = $plugin->{$_} for grep { $_ !~ /^=/ } keys %$plugin;
 }
 
