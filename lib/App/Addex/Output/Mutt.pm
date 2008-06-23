@@ -75,6 +75,10 @@ sub _aliasify {
   return lc $text;
 }
 
+sub _ig {
+  return $_[0] =~ /;$/ and $_[0] =~ /:/;
+}
+
 sub process_entry {
   my ($self, $addex, $entry) = @_;
 
@@ -99,8 +103,11 @@ sub process_entry {
   my @aliases = 
     map { $self->_aliasify($_) } grep { defined } $entry->nick, $name;
 
+  my @name_strs = (qq{ ($name)}, q{});
+
   my ($rcpt_email) = grep { $_->receives } @emails;
-  $self->output("alias $_ $rcpt_email ($name)") for @aliases;
+  $self->output("alias $_ $rcpt_email$name_strs[_ig($rcpt_email)]")
+    for @aliases;
 
   # It's not that you're expected to -use- these aliases, but they allow
   # mutt's reverse_alias to do its thing.
@@ -108,7 +115,9 @@ sub process_entry {
     my %label_count;
 
     if (defined(my $label = $rcpt_email->label)) {
-      $self->output("alias $_-$label $rcpt_email ($name)") for @aliases;
+      $self->output("alias $_-$label $rcpt_email$name_strs[_ig($rcpt_email)]")
+        for @aliases;
+
       $label_count{$label} = 1;
     }
 
@@ -122,7 +131,7 @@ sub process_entry {
         my $alias = length $label ? "$id-$label" : $id;
         $alias .= "-" . ($label_count{$label} - 1) if $label_count{$label} > 1;
 
-        $self->output("alias $alias $rcpt_emails[$i] ($name)");
+        $self->output("alias $alias $rcpt_emails[$i]$name_strs[_ig($rcpt_emails[$i])]");
       }
     }
   }

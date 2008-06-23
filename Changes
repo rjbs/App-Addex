@@ -2,6 +2,7 @@ Revision history for App-Addex
 
 0.018     2008-06-22
           make ->entries a delegated method
+          make Output::Mutt not give (name) for groups; mutt pukes
 
 0.017     2008-05-29
           most of Config has been refactored to Config::INI::MVP::Reader
