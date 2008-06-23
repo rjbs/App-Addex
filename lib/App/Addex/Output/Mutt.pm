@@ -12,11 +12,11 @@ App::Addex::Output::Mutt - generate mutt configuration from an address book
 
 =head1 VERSION
 
-version 0.017
+version 0.018
 
 =cut
 
-our $VERSION = '0.017';
+our $VERSION = '0.018';
 
 =head1 DESCRIPTION
 

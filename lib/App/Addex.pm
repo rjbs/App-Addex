@@ -16,11 +16,11 @@ App::Addex - generate mail tool configuration from an address book
 
 =head1 VERSION
 
-version 0.017
+version 0.018
 
 =cut
 
-our $VERSION = '0.017';
+our $VERSION = '0.018';
 
 =head1 DESCRIPTION
 
@@ -123,6 +123,19 @@ sub output_plugins {
   return @{ $self->{output} };
 }
 
+=head2 entries
+
+This method returns all the entries to be processed.  By default it is
+delegated to the address book object.  This method may change a good bit in the
+future, as we really want an iterator, not just a list.
+
+=cut
+
+sub entries {
+  my ($self) = @_;
+  return $self->addressbook->entries;
+}
+
 =head2 run
 
   App::Addex->new({ ... })->run;
@@ -135,7 +148,7 @@ entries, invoking the output plugins for each one.
 sub run {
   my ($self) = @_;
 
-  for my $entry ($self->addressbook->entries) {
+  for my $entry ($self->entries) {
     for my $plugin ($self->output_plugins) {
       $plugin->process_entry($self, $entry);
     }
