@@ -13,6 +13,8 @@ requires('Mixin::ExtraFields'        => 0.005); # can get id from refaddr
 requires('Mixin::ExtraFields::Param' => 0.000); # minimum unknown
 requires('Text::Unidecode'           => 0.000); # minimum unknown
 
+repository('http://github.com/rjbs/app-addex');
+
 extra_tests;
 
 WriteAll();
