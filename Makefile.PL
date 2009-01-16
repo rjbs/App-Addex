@@ -17,4 +17,6 @@ repository('http://github.com/rjbs/app-addex');
 
 extra_tests;
 
+auto_manifest;
+
 WriteAll();
