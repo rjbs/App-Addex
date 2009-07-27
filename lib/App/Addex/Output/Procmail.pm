@@ -11,11 +11,11 @@ App::Addex::Output::Procmail - generate procmail recipes from an address book
 
 =head1 VERSION
 
-version 0.020
+version 0.021
 
 =cut
 
-our $VERSION = '0.020';
+our $VERSION = '0.021';
 
 =head1 DESCRIPTION
 

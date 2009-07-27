@@ -11,18 +11,18 @@ App::Addex::Config - read the addex config file
 
 =head1 VERSION
 
-version 0.020
+version 0.021
 
 =cut
 
-our $VERSION = '0.020';
+our $VERSION = '0.021';
 
 =head1 DESCRIPTION
 
 =cut
 
-sub starting_section { 'classes' }
-sub multivalue_args  { qw(output plugin) }
+sub starting_section_name { 'classes' }
+sub starting_section_multivalue_args  { [ qw(output plugin) ] }
 
 =head1 AUTHOR
 
