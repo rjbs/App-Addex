@@ -10,11 +10,11 @@ App::Addex::Entry::EmailAddress - an address book entry's email address
 
 =head1 VERSION
 
-version 0.019
+version 0.020
 
 =cut
 
-our $VERSION = '0.019';
+our $VERSION = '0.020';
 
 =head1 SYNOPSIS
 

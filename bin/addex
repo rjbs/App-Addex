@@ -10,11 +10,11 @@ addex - create mail helper files for address book entries
 
 =head1 VERSION
 
-version 0.001
+version 0.020
 
 =cut
 
-our $VERSION = '0.001';
+our $VERSION = '0.020';
 
 =head1 DESCRIPTION
 

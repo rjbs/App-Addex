@@ -10,6 +10,6 @@ sub new {
   bless $arg => $self;
 }
 
-sub multivalue_args { qw(array list) }
+sub mvp_multivalue_args { qw(array list) }
 
 1;
