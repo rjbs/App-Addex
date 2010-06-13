@@ -57,6 +57,9 @@ initialize the plugin before use.
 
 =cut
 
+# sub starting_section_name { 'classes' }
+sub mvp_multivalue_args  { qw(output plugin) }
+
 sub new {
   my ($class, $arg) = @_;
 
@@ -88,6 +91,17 @@ sub new {
   }
 
   return $self;
+}
+
+sub from_sequence {
+  my ($class, $seq) = @_;
+
+  my %arg;
+  for my $section ($seq->sections) {
+    $arg{ $section->name } = $section->payload;
+  }
+
+  $class->new(\%arg);
 }
 
 sub _initialize_plugin {

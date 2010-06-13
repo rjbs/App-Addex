@@ -24,7 +24,8 @@ your address book.  For more information, consult L<App::Addex>.
 =cut
 
 use App::Addex;
-use App::Addex::Config;
+use Config::MVP::Assembler;
+use Config::MVP::Reader::INI;
 use File::HomeDir;
 use File::Spec;
 use Getopt::Long::Descriptive;
@@ -35,16 +36,15 @@ my ($opt, $usage) = describe_options(
     { default => File::Spec->catfile(File::HomeDir->my_home, '.addex') }   ],
 );
 
-my $ini = App::Addex::Config->read_file($opt->{config});
+my $assembler = Config::MVP::Assembler->new;
+$assembler->change_section('App::Addex', 'classes');
 
-my $config = {};
+my $seq = Config::MVP::Reader::INI->read_config(
+  $opt->{config},
+  { assembler => $assembler }
+);
 
-for my $plugin (@$ini) {
-  my $p = $config->{ $plugin->{'=package'} || $plugin->{'=name'} } = {};
-  $p->{$_} = $plugin->{$_} for grep { $_ !~ /^=/ } keys %$plugin;
-}
-
-my $addex = App::Addex->new($config);
+my $addex = App::Addex->from_sequence($seq);
 
 $addex->run;
 
