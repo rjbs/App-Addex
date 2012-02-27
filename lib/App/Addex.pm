@@ -147,7 +147,7 @@ future, as we really want an iterator, not just a list.
 
 sub entries {
   my ($self) = @_;
-  return $self->addressbook->entries;
+  return sort { $a->name cmp $b->name } $self->addressbook->entries;
 }
 
 =head2 run
