@@ -1,19 +1,27 @@
-use inc::Module::Install;
+use strict;
+use warnings;
+use ExtUtils::MakeMaker;
 
-all_from      ('lib/App/Addex.pm');
-
-install_script('bin/addex');
-
-requires('Config::MVP::Reader::INI'  => 2.000); # current series
-requires('File::HomeDir'             => 0.000); # minimum unknown
-requires('File::Spec'                => 0.000); # minimum unknown
-requires('Getopt::Long::Descriptive' => 0.060); # for %c in format
-requires('Mixin::ExtraFields'        => 0.005); # can get id from refaddr
-requires('Mixin::ExtraFields::Param' => 0.000); # minimum unknown
-requires('Text::Unidecode'           => 0.000); # minimum unknown
-
-repository('http://github.com/rjbs/app-addex');
-
-auto_manifest;
-
-WriteAll();
+WriteMakefile(
+  NAME  => 'App::Addex',
+  VERSION_FROM  => 'lib/App/Addex.pm',
+  (eval { ExtUtils::MakeMaker->VERSION(6.21) } ? (LICENSE => 'perl') : ()),
+  PREREQ_PM => {
+    'Config::MVP::Reader::INI'  => 2.000,
+    'File::HomeDir'             => 0.000,
+    'File::Spec'                => 0.000,
+    'Getopt::Long::Descriptive' => 0.060,
+    'Mixin::ExtraFields'        => 0.005,
+    'Mixin::ExtraFields::Param' => 0.000,
+    'Text::Unidecode'           => 0.000, # should replace this!
+  },
+  EXE_FILES => [ 'bin/addex' ],
+  (eval { ExtUtils::MakeMaker->VERSION(6.46) }
+    ? (META_MERGE => {
+        resources => {
+          repository => 'http://github.com/rjbs/app-addex'
+        }
+      })
+    : ()
+  ),
+);
