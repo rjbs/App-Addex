@@ -1,5 +1,8 @@
 Revision history for App-Addex
 
+0.023     2012-02-27
+          sort entries before processing
+
 0.022     2010-06-13
           updated for new Config::MVP
 
