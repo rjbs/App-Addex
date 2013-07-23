@@ -76,7 +76,7 @@ sub _aliasify {
 }
 
 sub _ig {
-  return $_[0] =~ /;$/ and $_[0] =~ /:/;
+  return($_[0] =~ /;$/ and $_[0] =~ /:/);
 }
 
 sub process_entry {
