@@ -2,21 +2,10 @@ use strict;
 use warnings;
 
 package App::Addex::Output::Mutt;
-use base qw(App::Addex::Output::ToFile);
+use parent qw(App::Addex::Output::ToFile);
+# ABSTRACT: generate mutt configuration from an address book
 
 use Text::Unidecode ();
-
-=head1 NAME
-
-App::Addex::Output::Mutt - generate mutt configuration from an address book
-
-=head1 VERSION
-
-version 0.023
-
-=cut
-
-our $VERSION = '0.023';
 
 =head1 DESCRIPTION
 
@@ -41,10 +30,6 @@ The valid configuration parameters for this plugin are:
   unidecode - if set (to 1) this will transliterate all aliases to ascii before
               adding them to the file
 
-=head1 METHODS
-
-App::Addex::Output::Mutt is a App::Addex::Output::ToFile subclass, and inherits its methods.
-
 =cut
 
 sub new {
@@ -58,7 +43,7 @@ sub new {
   return $self;
 }
 
-=head2 process_entry
+=method process_entry
 
   $mutt_outputter->process_entry($addex, $entry);
 
@@ -100,7 +85,7 @@ sub process_entry {
       for grep { $_->receives } @emails;
   }
 
-  my @aliases = 
+  my @aliases =
     map { $self->_aliasify($_) } grep { defined } $entry->nick, $name;
 
   my @name_strs = (qq{ ($name)}, q{});
@@ -136,24 +121,5 @@ sub process_entry {
     }
   }
 }
-
-=head1 AUTHOR
-
-Ricardo SIGNES, C<< <rjbs@cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-=head1 COPYRIGHT
-
-Copyright 2006-2007 Ricardo Signes, all rights reserved.
-
-This program is free software; you may redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
 
 1;

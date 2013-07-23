@@ -1,28 +1,13 @@
-#!/usr/bin/perl
 use strict;
 use warnings;
-
 package App::Addex::AddressBook;
+# ABSTRACT: the address book that addex will consult
 
 use App::Addex::Entry;
 
 use Carp ();
 
-=head1 NAME
-
-App::Addex::AddressBook - the address book that addex will consult
-
-=head1 VERSION
-
-version 0.023
-
-=cut
-
-our $VERSION = '0.023';
-
-=head1 METHODS
-
-=head2 new
+=method new
 
   my $addr_book = App::Addex::AddressBook->new(\%arg);
 
@@ -41,7 +26,7 @@ sub new {
   bless { addex => $arg->{addex} } => $class;
 }
 
-=head2 addex
+=method addex
 
   my $addex = $addr_book->addex;
 
@@ -51,7 +36,7 @@ This returns the App::Addex object with which the address book is associated.
 
 sub addex { $_[0]->{addex} }
 
-=head2 entries
+=method entries
 
   my @entries = $addex->entries;
 
@@ -66,24 +51,5 @@ subclass.
 sub entries {
   Carp::confess "no behavior defined for virtual method entries";
 }
-
-=head1 AUTHOR
-
-Ricardo SIGNES, C<< <rjbs@cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-=head1 COPYRIGHT
-
-Copyright 2006-2007 Ricardo Signes, all rights reserved.
-
-This program is free software; you may redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
 
 1;

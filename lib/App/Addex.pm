@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 use strict;
 use warnings;
 
@@ -7,22 +6,15 @@ use warnings;
 use 5.008;
 
 package App::Addex;
+# ABSTRACT: generate mail tool configuration from an address book
 
 use Carp ();
 
-=head1 NAME
-
-App::Addex - generate mail tool configuration from an address book
-
-=head1 VERSION
-
-version 0.023
-
-=cut
-
-our $VERSION = '0.023';
-
 =head1 DESCRIPTION
+
+B<Achtung!>  The API to this code may very well change.  It is almost certain
+to be broken into smaller pieces, to support alternate sources of entries, and
+it might just get plugins.
 
 This module iterates through all the entries in an address book and produces
 configuration file based on the entries in the address book, using configured
@@ -31,13 +23,7 @@ output plugins.
 It is meant to be run with the F<addex> command, which is bundled as part of
 this software distribution.
 
-=head1 METHODS
-
-B<Achtung!>  The API to this code may very well change.  It is almost certain
-to be broken into smaller pieces, to support alternate sources of entries, and
-it might just get plugins.
-
-=head2 new
+=method new
 
   my $addex = App::Addex->new(\%arg);
 
@@ -116,7 +102,7 @@ sub _initialize_plugin {
   return $class->new($arg);
 }
 
-=head2 addressbook
+=method addressbook
 
   my $abook = $addex->addressbook;
 
@@ -126,7 +112,7 @@ This method returns the App::Addex::AddressBook object.
 
 sub addressbook { $_[0]->{addressbook} }
 
-=head2 output_plugins
+=method output_plugins
 
 This method returns all of the output plugin objects.
 
@@ -137,7 +123,7 @@ sub output_plugins {
   return @{ $self->{output} };
 }
 
-=head2 entries
+=method entries
 
 This method returns all the entries to be processed.  By default it is
 delegated to the address book object.  This method may change a good bit in the
@@ -150,7 +136,7 @@ sub entries {
   return sort { $a->name cmp $b->name } $self->addressbook->entries;
 }
 
-=head2 run
+=method run
 
   App::Addex->new({ ... })->run;
 
@@ -172,24 +158,5 @@ sub run {
     $plugin->finalize;
   }
 }
-
-=head1 AUTHOR
-
-Ricardo SIGNES, C<< <rjbs@cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-=head1 COPYRIGHT
-
-Copyright 2006-2007 Ricardo Signes.
-
-This program is free software; you may redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
 
 1;

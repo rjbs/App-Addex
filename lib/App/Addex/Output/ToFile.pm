@@ -1,24 +1,11 @@
-#!/usr/bin/perl
 use strict;
 use warnings;
 
 package App::Addex::Output::ToFile;
-use App::Addex::Output;
-BEGIN { our @ISA = 'App::Addex::Output' }
+use parent 'App::Addex::Output';
+# ABSTRACT: base class for output plugins that write to files
 
 use Carp ();
-
-=head1 NAME
-
-App::Addex::Output::ToFile - base class for output plugins that write to files
-
-=head1 VERSION
-
-version 0.023
-
-=cut
-
-our $VERSION = '0.023';
 
 =head1 DESCRIPTION
 
@@ -26,9 +13,7 @@ This is a base class for output plugins that will write to files.  The
 "filename" configuration parameter must be given, and must be the name of a
 file to which the user can write.
 
-=head1 METHODS
-
-=head2 new
+=method new
 
   my $addex = App::Addex::Output::Subclass->new(\%arg);
 
@@ -58,7 +43,7 @@ sub new {
   return $self;
 }
 
-=head2 output
+=method output
 
   $outputter->output($string);
 
@@ -78,24 +63,5 @@ sub finalize {
   # needed. -- rjbs, 2007-11-05
   delete $_[0]->{fh};
 }
-
-=head1 AUTHOR
-
-Ricardo SIGNES, C<< <rjbs@cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-=head1 COPYRIGHT
-
-Copyright 2006-2007 Ricardo Signes, all rights reserved.
-
-This program is free software; you may redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
 
 1;

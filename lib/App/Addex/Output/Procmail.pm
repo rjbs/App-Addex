@@ -1,21 +1,9 @@
-#!/usr/bin/perl
 use strict;
 use warnings;
 
 package App::Addex::Output::Procmail;
-use base qw(App::Addex::Output::ToFile);
-
-=head1 NAME
-
-App::Addex::Output::Procmail - generate procmail recipes from an address book
-
-=head1 VERSION
-
-version 0.023
-
-=cut
-
-our $VERSION = '0.023';
+use parent qw(App::Addex::Output::ToFile);
+# ABSTRACT: generate procmail recipes from an address book
 
 =head1 DESCRIPTION
 
@@ -32,12 +20,7 @@ The valid configuration parameters for this plugin are:
 
   filename - the filename to which to write the procmail recipes
 
-=head1 METHODS
-
-App::Addex::Output::Procmail is a App::Addex::Output::ToFile subclass, and
-inherits its methods.
-
-=head2 process_entry
+=method process_entry
 
   $procmail_outputter->process_entry($addex, $entry);
 
@@ -63,24 +46,5 @@ sub process_entry {
   }
 
 }
-
-=head1 AUTHOR
-
-Ricardo SIGNES, C<< <rjbs@cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-=head1 COPYRIGHT
-
-Copyright 2006-2007 Ricardo Signes, all rights reserved.
-
-This program is free software; you may redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
 
 1;

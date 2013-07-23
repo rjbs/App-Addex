@@ -1,5 +1,11 @@
 Revision history for App-Addex
 
+{{$NEXT}}
+          fix a boneheaded precedence error in the Mutt plugin; thanks, Reini
+          Urban!
+
+          repackage with Dist::Zilla
+
 0.023     2012-02-27
           sort entries before processing
 
