@@ -1,6 +1,8 @@
 Revision history for App-Addex
 
 {{$NEXT}}
+
+0.024     2013-07-23 11:21:27 America/Los_Angeles
           fix a boneheaded precedence error in the Mutt plugin; thanks, Reini
           Urban!
 
