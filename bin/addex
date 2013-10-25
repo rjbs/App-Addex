@@ -3,18 +3,8 @@ use strict;
 use warnings;
 
 package App::Addex::addex;
-
-=head1 NAME
-
-addex - create mail helper files for address book entries
-
-=head1 VERSION
-
-version 0.023
-
-=cut
-
-our $VERSION = '0.023';
+# PODNAME:  addex
+# ABSTRACT: create mail helper files for address book entries
 
 =head1 DESCRIPTION
 
@@ -47,23 +37,4 @@ my $seq = Config::MVP::Reader::INI->read_config(
 my $addex = App::Addex->from_sequence($seq);
 
 $addex->run;
-
-=head1 AUTHOR
-
-Ricardo SIGNES, C<< <rjbs@cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-=head1 COPYRIGHT
-
-Copyright 2006-2007 Ricardo Signes, all rights reserved.
-
-This program is free software; you may redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
 

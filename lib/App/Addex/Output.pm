@@ -3,18 +3,7 @@ use warnings;
 
 package App::Addex::Output;
 use Carp ();
-
-=head1 NAME
-
-App::Addex::Output - base class for output plugins
-
-=head1 VERSION
-
-version 0.023
-
-=cut
-
-our $VERSION = '0.023';
+# ABSTRACT: base class for output plugins
 
 =head1 DESCRIPTION
 
@@ -57,24 +46,5 @@ This method is called after all entries have been processed.
 =cut
 
 sub finalize { }
-
-=head1 AUTHOR
-
-Ricardo SIGNES, C<< <rjbs@cpan.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests through the web interface at
-L<http://rt.cpan.org>.  I will be notified, and then you'll automatically be
-notified of progress on your bug as I make changes.
-
-=head1 COPYRIGHT
-
-Copyright 2006-2007 Ricardo Signes, all rights reserved.
-
-This program is free software; you may redistribute it and/or modify it
-under the same terms as Perl itself.
-
-=cut
 
 1;
