@@ -2,6 +2,9 @@ Revision history for App-Addex
 
 {{$NEXT}}
 
+0.025     2013-10-24 22:34:16 America/New_York
+          fix a bunch of duplicated documentation
+
 0.024     2013-07-23 11:21:27 America/Los_Angeles
           fix a boneheaded precedence error in the Mutt plugin; thanks, Reini
           Urban!
