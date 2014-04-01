@@ -89,7 +89,7 @@ sub process_entry {
   my @aliases =
     map { $self->_aliasify($_) } grep { defined } $entry->nick, $name;
 
-  my @name_strs = (qq{ "$name"}, q{});
+  my @name_strs = (qq{"$name" }, q{});
 
   my ($rcpt_email) = grep { $_->receives } @emails;
   $self->output("alias $_ $name_strs[_is_group($rcpt_email)]<$rcpt_email>")

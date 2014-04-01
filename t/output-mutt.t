@@ -24,31 +24,31 @@ $addex->run;
 
 like(
   $buffer,
-  qr/^alias rjbs rjbs\@example.com/sm,
+  qr/^alias rjbs "Ricardo SIGNES" <rjbs\@example.com>/sm,
   "default nick-based alias created",
 );
 
 like(
   $buffer,
-  qr/^alias ricardosignes rjbs\@example.com/sm,
+  qr/^alias ricardosignes "Ricardo SIGNES" <rjbs\@example.com>/sm,
   "default name-based alias created",
 );
 
 like(
   $buffer,
-  qr/^alias rjbs-work rjbs\@example.com/sm,
+  qr/^alias rjbs-work "Ricardo SIGNES" <rjbs\@example.com>/sm,
   "default nick-based alias with label created",
 );
 
 like(
   $buffer,
-  qr/^alias ricardosignes-work rjbs\@example.com/sm,
+  qr/^alias ricardosignes-work "Ricardo SIGNES" <rjbs\@example.com>/sm,
   "default name-based alias with label created",
 );
 
 like(
   $buffer,
-  qr/^alias rjbs-work-1 rjbs\@example.biz/sm,
+  qr/^alias rjbs-work-1 "Ricardo SIGNES" <rjbs\@example.biz>/sm,
   "secondary nick-based alias with label created",
 );
 
