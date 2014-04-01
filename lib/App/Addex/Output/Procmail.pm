@@ -2,8 +2,9 @@ use strict;
 use warnings;
 
 package App::Addex::Output::Procmail;
-use parent qw(App::Addex::Output::ToFile);
 # ABSTRACT: generate procmail recipes from an address book
+
+use parent qw(App::Addex::Output::ToFile);
 
 =head1 DESCRIPTION
 

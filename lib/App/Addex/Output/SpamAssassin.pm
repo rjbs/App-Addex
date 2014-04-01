@@ -2,8 +2,9 @@ use strict;
 use warnings;
 
 package App::Addex::Output::SpamAssassin;
-use parent qw(App::Addex::Output::ToFile);
 # ABSTRACT: generate SpamAssassin whitelists from an address book
+
+use parent qw(App::Addex::Output::ToFile);
 
 =head1 DESCRIPTION
 

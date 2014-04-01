@@ -2,8 +2,9 @@ use strict;
 use warnings;
 
 package App::Addex::Output::Mutt;
-use parent qw(App::Addex::Output::ToFile);
 # ABSTRACT: generate mutt configuration from an address book
+
+use parent qw(App::Addex::Output::ToFile);
 
 use Text::Unidecode ();
 

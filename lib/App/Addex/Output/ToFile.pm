@@ -2,8 +2,9 @@ use strict;
 use warnings;
 
 package App::Addex::Output::ToFile;
-use parent 'App::Addex::Output';
 # ABSTRACT: base class for output plugins that write to files
+
+use parent 'App::Addex::Output';
 
 use Carp ();
 

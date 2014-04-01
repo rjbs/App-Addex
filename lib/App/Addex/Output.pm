@@ -2,8 +2,9 @@ use strict;
 use warnings;
 
 package App::Addex::Output;
-use Carp ();
 # ABSTRACT: base class for output plugins
+
+use Carp ();
 
 =head1 DESCRIPTION
 
