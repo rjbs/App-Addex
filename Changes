@@ -1,6 +1,8 @@
 Revision history for App-Addex
 
 {{$NEXT}}
+        - update author contact info
+        - add perl-support section
 
 0.026     2014-03-31 21:41:23-04:00 America/New_York
         - use phrase/addr-spec output for muttrc instead of comment form
